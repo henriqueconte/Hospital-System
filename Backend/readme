@@ -2,15 +2,9 @@
 
 python3 -m pip install -r requirements.txt
 
-2 - Configurar o banco:
+2 - Configurar o banco
 
-DATABASES = {
-  'default': {
-    'ENGINE': 'django.db.backends.mysql',
-    'NAME': 'HospitalSystem',
-    'USER': 'ana',
-    'PASSWORD': '',
-    'HOST': 'localhost',
-    'PORT': '3306',
-  }
-}
+3 - Comandos:
+Executar -> python manage.py runserver
+Criar migrações quando feitas alterações nos models -> python manage.py makemigrations
+Migrar as migrações existentes para o banco -> python manage.py migrate

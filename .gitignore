@@ -1,8 +1,8 @@
 
-Backend/HospitalSystem/HospitalSystem/__pycache__/__init__.cpython-38.pyc
+Backend/HospitalSystem/HospitalSystem/__pycache__/
 
-Backend/HospitalSystem/HospitalSystem/__pycache__/settings.cpython-38.pyc
+Backend/HospitalSystem/core/migrations/__pycache__/
 
-Backend/HospitalSystem/HospitalSystem/__pycache__/urls.cpython-38.pyc
+Backend/HospitalSystem/core/models/__pycache__/
 
-Backend/HospitalSystem/HospitalSystem/__pycache__/wsgi.cpython-38.pyc
+Backend/HospitalSystem/core/__pycache__/
