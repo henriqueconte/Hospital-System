@@ -30,6 +30,7 @@ docker run -it --rm ^
     --name hospitalsystem ^
     -p 8000:8000 ^
     --network hospitalsystem-net ^
+    --env-file dockerfiles/api.env.local ^
     hospitalsystem /bin/bash -c "python /code/manage.py makemigrations && python /code/manage.py migrate && python /code/manage.py runserver 0.0.0.0:8000"
 
 
