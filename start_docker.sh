@@ -38,3 +38,7 @@ docker run -ti --rm \
     python /code/manage.py runserver 0.0.0.0:8000"
 
 docker network connect bridge hospitalsystem
+docker network connect bridge hospitalsystem-db
+docker logs -f hospitalsystem 
+
+
