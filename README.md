@@ -1,8 +1,21 @@
 # Hospital-System
 
-## Host:
+## Hosts:
 
-- http://54.232.147.115/
+### Api:
+
+porta 80
+
+http://54.232.147.115
+
+### MySql
+
+Banco na porta 3306
+
+- Senha (temporaria): replace_me_09_03_21
+- User: root
+
+## Rodando em desenvolvimento:
 
 ### Opção 1:
 
