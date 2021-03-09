@@ -1,0 +1,16 @@
+1 - Instalar os requirements:
+
+python3 -m pip install -r requirements.txt
+
+2 - Configurar o banco:
+
+DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'HospitalSystem',
+    'USER': 'ana',
+    'PASSWORD': '',
+    'HOST': 'localhost',
+    'PORT': '3306',
+  }
+}
