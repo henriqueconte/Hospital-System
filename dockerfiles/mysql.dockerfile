@@ -1,3 +1,4 @@
 from mysql
 ENV MYSQL_DATABASE=HospitalSystem
 ENV MYSQL_ROOT_PASSWORD=root
+ENV MYSQL_ROOT_HOST='%'

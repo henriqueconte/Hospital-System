@@ -3,35 +3,34 @@ docker build -f dockerfiles/api.dockerfile -t hospitalsystem .
 docker build -f dockerfiles/mysql.dockerfile -t hospitalsystem-db .
 
 @REM stop old containers
-docker stop hospitalsystem-db
-docker rm hospitalsystem-db
-docker stop hospitalsystem
-docker rm hospitalsystem
+docker stop hospitalsystem-db >nul 2>&1
+docker rm hospitalsystem-db >nul 2>&1
+docker stop hospitalsystem >nul 2>&1
+docker rm hospitalsystem >nul 2>&1
 
 @REM network
-docker network rm hospitalsystem-net
-docker network create hospitalsystem-net
+docker network rm hospitalsystem-net >nul 2>&1
+docker network create hospitalsystem-net >nul 2>&1
+
 
 @REM mysql
 docker run -td --rm ^
     --name hospitalsystem-db ^
     -p 3306:3306 ^
-    -v mysqldata:/var/lib/mysql ^
     --network hospitalsystem-net ^
+    -v %cd%/mysql_data:/var/lib/mysql ^
     hospitalsystem-db mysqld --default-authentication-plugin=mysql_native_password
 
-echo "waiting 30s for mysql startup"
-timeout /t 30
+echo "waiting 3m for mysql startup"
+timeout /t 180 /nobreak
 
 @REM django api
-docker run -td --rm ^
+docker run -it --rm ^
     -v %cd%/Backend/hospitalsystem:/HospitalSystem ^
-    --name hospitalsystem-net ^
+    --name hospitalsystem ^
     -p 8000:8000 ^
     --network hospitalsystem-net ^
-    hospitalsystem /bin/bash -c "python /code/manage.py makemigrations && \
-    python /code/manage.py migrate && \
-    python /code/manage.py runserver 0.0.0.0:8000"
+    hospitalsystem /bin/bash -c "python /code/manage.py makemigrations && python /code/manage.py migrate && python /code/manage.py runserver 0.0.0.0:8000"
 
 
 docker network connect bridge hospitalsystem

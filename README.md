@@ -9,9 +9,10 @@ python3 -m pip install -r requirements.txt
 2 - Configurar o banco
 
 3 - Comandos:
-* Executar -> python manage.py runserver
-* Criar migrações quando feitas alterações nos models -> python manage.py makemigrations
-* Migrar as migrações existentes para o banco -> python manage.py migrate
+
+- Executar -> python manage.py runserver
+- Criar migrações quando feitas alterações nos models -> python manage.py makemigrations
+- Migrar as migrações existentes para o banco -> python manage.py migrate
 
 ```python
 DATABASES = {
@@ -27,11 +28,13 @@ DATABASES = {
 ```
 
 ### Opção 2:
+
 Caso você queira rodar em docker:
+
 1 - Instalar docker
 
-2 - Rodar start_docker.bat ou start_docker.sh. A api e o banco vão subir em containers separados. e as migrações vão ser aplicadas
+2 - Rodar start_docker_all.bat ou start_docker_all.sh. A api e o banco vão subir em containers separados, e as migrações vão ser aplicadas. O setup inicial do banco demora um pouco, principalmente no windows.
 
 3 - Conectar em localhost:8000
 
-Opcionalmente, voce pode conectar no banco de dados rodando no container em localhost:3306, com user:root e pass:root
+Opcionalmente, voce pode conectar no banco de dados rodando no container em localhost:3306. USER: root, PASS: root
