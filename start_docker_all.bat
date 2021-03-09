@@ -12,7 +12,6 @@ docker rm hospitalsystem >nul 2>&1
 docker network rm hospitalsystem-net >nul 2>&1
 docker network create hospitalsystem-net >nul 2>&1
 
-
 @REM mysql
 docker run -td --rm ^
     --name hospitalsystem-db ^
