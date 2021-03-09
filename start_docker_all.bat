@@ -36,4 +36,3 @@ docker run -it --rm ^
 docker network connect bridge hospitalsystem
 docker network connect bridge hospitalsystem-db
 docker logs -f hospitalsystem 
-

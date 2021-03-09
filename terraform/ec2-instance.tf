@@ -1,9 +1,13 @@
-resource "aws_instance" "hospital-system-cluster-instance" {
+resource "aws_spot_instance_request" "hospital-system-cluster-instance" {
   ami                         = "ami-038707d64e5b8e7ba"
-  instance_type               = "t3a.nano"
+  spot_price                  = "0.02"
+  instance_type               = "m3.medium"
   availability_zone           = "sa-east-1a"
+  instance_interruption_behaviour = "terminate"
   associate_public_ip_address = true
   private_ip                  = "10.0.1.55"
+  spot_type                   = "persistent"
+
 
   user_data = <<EOF
 Content-Type: multipart/mixed; boundary="==BOUNDARY=="

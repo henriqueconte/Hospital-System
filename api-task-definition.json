@@ -1,0 +1,76 @@
+[
+  {
+    "dnsSearchDomains": [],
+    "entryPoint": [],
+    "portMappings": [
+      {
+        "hostPort": 80,
+        "protocol": "tcp",
+        "containerPort": 8000
+      }
+    ],
+    "command": ["/bin/bash" ,"-c", "python /code/manage.py makemigrations && python /code/manage.py migrate && python /code/manage.py runserver 0.0.0.0:8000"],
+    "linuxParameters": {
+      "capabilities": {
+        "add": null,
+        "drop": null
+      },
+      "sharedMemorySize": null,
+      "tmpfs": null,
+      "devices": [],
+      "maxSwap": null,
+      "swappiness": null,
+      "initProcessEnabled": null
+    },
+    "cpu": 256,
+    "environment": [
+      {
+        "name": "DB_USER",
+        "value": "root"
+      },
+      {
+        "name": "DB_HOST",
+        "value": "10.0.1.55"
+      },
+      {
+        "name": "DB_PASS",
+        "value": "replace_me_09_03_21"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/hospital-system-api",
+        "awslogs-region": "sa-east-1",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "ulimits": null,
+    "dnsServers": [],
+    "mountPoints": [],
+    "workingDirectory": null,
+    "secrets": null,
+    "dockerSecurityOptions": [],
+    "memory": 256,
+    "memoryReservation": null,
+    "volumesFrom": [],
+    "stopTimeout": null,
+    "image": "208997947709.dkr.ecr.sa-east-1.amazonaws.com/api-hospital-system:latest",
+    "startTimeout": null,
+    "dependsOn": null,
+    "disableNetworking": null,
+    "interactive": null,
+    "healthCheck": null,
+    "essential": true,
+    "links": [],
+    "hostname": null,
+    "extraHosts": [],
+    "pseudoTerminal": false,
+    "user": null,
+    "readonlyRootFilesystem": false,
+    "dockerLabels": null,
+    "systemControls": null,
+    "privileged": false,
+    "name": "api-hospital-system"
+  }
+]

@@ -1,0 +1,76 @@
+[
+  {
+    "dnsSearchDomains": [],
+    "entryPoint": [],
+    "portMappings": [
+      {
+        "hostPort": 3306,
+        "protocol": "tcp",
+        "containerPort": 3306
+      }
+    ],
+    "command": ["--default-authentication-plugin=mysql_native_password"],
+    "linuxParameters": {
+      "capabilities": {
+        "add": null,
+        "drop": null
+      },
+      "sharedMemorySize": null,
+      "tmpfs": null,
+      "devices": [],
+      "maxSwap": null,
+      "swappiness": null,
+      "initProcessEnabled": null
+    },
+    "cpu": 256,
+    "environment": [
+      {
+        "name": "MYSQL_ROOT_HOST",
+        "value": "%"
+      },
+      {
+        "name": "MYSQL_DATABASE",
+        "value": "HospitalSystem"
+      },
+      {
+        "name": "MYSQL_ROOT_PASSWORD",
+        "value": "replace_me_09_03_21"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/hospital-system-mysql",
+        "awslogs-region": "sa-east-1",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "ulimits": null,
+    "dnsServers": [],
+    "mountPoints": [],
+    "workingDirectory": null,
+    "secrets": null,
+    "dockerSecurityOptions": [],
+    "memory": 512,
+    "memoryReservation": null,
+    "volumesFrom": [],
+    "stopTimeout": null,
+    "image": "mysql",
+    "startTimeout": null,
+    "dependsOn": null,
+    "disableNetworking": null,
+    "interactive": null,
+    "healthCheck": null,
+    "essential": true,
+    "links": [],
+    "hostname": null,
+    "extraHosts": [],
+    "pseudoTerminal": false,
+    "user": null,
+    "readonlyRootFilesystem": false,
+    "dockerLabels": null,
+    "systemControls": null,
+    "privileged": false,
+    "name": "mysql-hospital-system"
+  }
+]
