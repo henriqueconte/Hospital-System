@@ -10,8 +10,8 @@ http://54.232.147.115
 
 ### MySql
 
-Banco na porta 3306
-
+- Host: 54.232.147.115
+- Port: 3306
 - Senha (temporaria): replace_me_09_03_21
 - User: root
 
