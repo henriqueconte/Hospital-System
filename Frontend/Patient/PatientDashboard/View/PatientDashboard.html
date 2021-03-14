@@ -16,7 +16,12 @@
     <!-- <script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.js"></script> -->
 
     <!-- JAVASCRIPT FILE SOURCE -->
-    <script type="text/javascript" src="../Controller/PatientDashboard.js"> </script>
+
+    <!-- Não estou conseguindo colocar o .js em outro diretório??? Estou recebendo o erro Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 1.)-->
+    <!-- <script type="text/javascript" src="../Controller/PatientDashboard.js"></script> -->
+    <script type="text/javascript" src="./Appointment.js"></script>
+    <script type="text/javascript" src="./PatientDashboard.js"></script>
+
 
     <title>Paciente - Início</title>
   
@@ -68,7 +73,7 @@
 
           <!-- APPOINTMENTS MOCK LIST -->
           
-          <div style="overflow-y: auto; max-height: 1000px;">
+          <!-- <div style="overflow-y: auto; max-height: 1000px;">
             <table id="dtDynamicVerticalScrollExample" class="table table-bordered" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -83,7 +88,7 @@
                   <td>João Nascimento</td>
                   <td>14:00-14:30</td>
                   <td>
-                    <button data-target="#editBoxModal" data-toggle="modal" class="btn font-weight-bold">
+                    <button data-target="#seeDetailsModal" data-toggle="modal" class="btn font-weight-bold">
                       <u>
                         Ver detalhes
                       </u>
@@ -94,7 +99,7 @@
                   <td>Beatriz Ribeiro</td>
                   <td>16:00-16:30</td>
                   <td>
-                    <button data-target="#editBoxModal" data-toggle="modal" class="btn font-weight-bold">
+                    <button data-target="#seeDetailsModal" data-toggle="modal" class="btn font-weight-bold">
                       <u>
                         Ver detalhes
                       </u>
@@ -105,7 +110,7 @@
                   <td>Joana Telles</td>
                   <td>17:00-18:00</td>
                   <td>
-                    <button data-target="#editBoxModal" data-toggle="modal" class="btn font-weight-bold">
+                    <button data-target="#seeDetailsModal" data-toggle="modal" class="btn font-weight-bold">
                       <u>
                         Ver detalhes
                       </u>
@@ -116,7 +121,7 @@
                   <td>Marta Nascimento</td>
                   <td>18:30-19:00</td>
                   <td>
-                    <button data-target="#editBoxModal" data-toggle="modal" class="btn font-weight-bold">
+                    <button data-target="#seeDetailsModal" data-toggle="modal" class="btn font-weight-bold">
                       <u>
                         Ver detalhes
                       </u>
@@ -127,7 +132,7 @@
                   <td>Orlando Wender</td>
                   <td>22:00-22:30</td>
                   <td>
-                    <button data-target="#editBoxModal" data-toggle="modal" class="btn font-weight-bold">
+                    <button data-target="#seeDetailsModal" data-toggle="modal" class="btn font-weight-bold">
                       <u>
                         Ver detalhes
                       </u>
@@ -138,7 +143,7 @@
                   <td>Thiago Ponte</td>
                   <td>22:30-23:00</td>
                   <td>
-                    <button data-target="#editBoxModal" data-toggle="modal" class="btn font-weight-bold">
+                    <button data-target="#seeDetailsModal" data-toggle="modal" class="btn font-weight-bold">
                       <u>
                         Ver detalhes
                       </u>
@@ -147,10 +152,18 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div style="overflow-y: auto; max-height: 300px;">
-            <table id="boxesTable" class="table table-bordered" cellspacing="0" width="100%">
-              <tbody id="boxesTableBody">
+          </div> -->
+          <div style="overflow-y: auto;">
+            <table id="appointmentsTable" class="table table-bordered" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th class="th-sm">Médico
+                  </th>
+                  <th class="th-sm">Horário
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="appointmentsTableBody">
 
                 <!-- APPOINTMENT ITEM (create dinamically at JS file) -->
                 
@@ -163,7 +176,7 @@
 
 
      <!-- APPOINTMENT DETAILS POP UP -->
-     <div class="modal fade" id="editBoxModal">
+     <div class="modal fade" id="seeDetailsModal">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <div class="modal-body">
