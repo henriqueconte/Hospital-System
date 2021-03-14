@@ -88,7 +88,7 @@ function cancelAppointment() {
 }
 
 //*************************************************
-// MARK: - Layout creation
+// MARK: - Requests
 //*************************************************
 function getAppointmentsRequest() {
     // TODO: Implement request to get patient appointments

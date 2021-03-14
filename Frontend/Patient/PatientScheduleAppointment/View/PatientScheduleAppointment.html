@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- <link rel="stylesheet" href="./css/bootstrap.mincopy.css"> -->
+
+    <!-- Icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- <script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.js"></script> -->
+
+    <!-- JAVASCRIPT FILE SOURCE -->
+
+    <!-- Não estou conseguindo colocar o .js em outro diretório??? Estou recebendo o erro Failed to load resource: The operation couldn’t be completed. (kCFErrorDomainCFNetwork error 1.)-->
+    <!-- <script type="text/javascript" src="../Controller/PatientDashboard.js"></script> -->
+    <script type="text/javascript" src="./Appointment.js"></script>
+    <script type="text/javascript" src="./PatientScheduleAppointment.js"></script>
+
+
+    <title>Agendar consulta</title>
+  
+  </head>
+
+  <div id="app" class="">
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">
+          Hospital System
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav mr-auto">
+            </ul>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Consultas agendadas</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Agendar uma consulta<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Histórico de consultas</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Sair</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+  </div>
+
+  <body>
+      <div>
+          <p class="mt-4 ml-5 font-weight-bold" style="font-size: x-large;">Agendar consulta</p>
+      </div>
+    <form class="p-4">
+        <div class="row justify-content-md-center">
+            <div class="col", style="max-width: 45%;">
+
+                <!-- DOCTOR NAME -->
+                <div class="form-group">
+                    <label class ="font-weight-bold">Médico</label>
+                    <select class="form-control" id="doctorsNameList" required>
+                        <!-- <option>Café</option>
+                        <option>Italiano</option>
+                        <option>Tailandês</option>
+                        <option>Padaria</option>
+                        <option>Japonês</option> -->
+                    </select>
+                </div>
+
+                &nbsp;
+
+                <!-- APPOINTMENT DATE -->
+                <div class="form-group">
+                    <label class="font-weight-bold">Data da consulta</label>
+                    <input class="form-control" id="appointmentDateForm" placeholder="Ex: 15/08/2021" required>
+                </div>       
+
+                &nbsp;
+
+                <!-- SCHEDULE APPOINTMENT BUTTON -->
+                <div class="p-2 text-center" >
+                    <button class="btn btn-primary" id="scheduleAppointmentButton" data-toggle="modal">AGENDAR</button>
+                </div>
+            </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>

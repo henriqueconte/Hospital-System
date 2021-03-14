@@ -96,7 +96,7 @@ function cancelAppointment() {
 }
 
 //*************************************************
-// MARK: - Layout creation
+// MARK: - Requests
 //*************************************************
 function cancelAppointmentRequest() {
     // TODO: Implement request to cancel an appointment
