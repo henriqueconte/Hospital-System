@@ -4,7 +4,7 @@ docker rm hospitalsystem-db 2>/dev/null
 docker stop hospitalsystem 2>/dev/null
 
 
-docker run -ti --rm \
+docker run -td --rm \
     -v "$(pwd)"/Backend/HospitalSystem:/code \
     --name hospitalsystem \
     -p 8000:8000 \
@@ -14,3 +14,5 @@ docker run -ti --rm \
     python /code/manage.py migrate && \
     python /code/manage.py runserver 0.0.0.0:8000"
 
+docker network connect bridge hospitalsystem
+docker logs -f hospitalsystem 

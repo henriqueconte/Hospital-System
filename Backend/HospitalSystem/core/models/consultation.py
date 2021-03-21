@@ -3,7 +3,7 @@ from .user import User
 from .doctor import Doctor
 
 class Consultation(models.Model):
-    doctor_id = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    doctor_id = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='doctor')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     start = models.DateTimeField(null=False, blank=False, db_index=True)
     end = models.DateTimeField(null=False, blank=False, db_index=True)
