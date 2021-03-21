@@ -20,26 +20,29 @@ def add_user(first_name, last_name, login, password):
         assert result.ok
 
 
-def add_doctor(first_name, last_name, specialty):
+def add_doctor(first_name, last_name, specialty, address):
     result = requests.post(
         DOCTOR_ENDPOINT,
         json={
             "first_name": first_name,
             "last_name": last_name,
             "specialty": specialty,
+            "address": address,
         },
     )
     if not result.ok:
         assert result.ok
 
 
-def add_consultation(user_id, doctor_id, date):
+def add_consultation(user_id, doctor_id, start, end, extra_data=None):
     result = requests.post(
         CONSULTATION_ENDPOINT,
         json={
             "user_id": user_id,
             "doctor_id": doctor_id,
-            "date": date,
+            "start": start,
+            "end": end,
+            "extra_data": json.dumps(extra_data),
         },
     )
     if not result.ok:
@@ -70,17 +73,64 @@ def add_if_undefined(endpoint, id, *args):
 
 
 add_if_undefined(USER_ENDPOINT, 1, "joaozinho", "teste", "teste", "123456")
-add_if_undefined(DOCTOR_ENDPOINT, 1, "maria", "teste", "cardiologista")
-add_if_undefined(DOCTOR_ENDPOINT, 2, "jorge", "testudo", "dermatologista")
-add_if_undefined(DOCTOR_ENDPOINT, 3, "miguel", "barbiz", "ortopedista")
-add_if_undefined(DOCTOR_ENDPOINT, 4, "carla", "bar", "neurologista")
-add_if_undefined(DOCTOR_ENDPOINT, 5, "luciana", "foo", "oftalmologista")
-add_if_undefined(DOCTOR_ENDPOINT, 6, "joaquim", "foobar", "clínico geral")
+add_if_undefined(DOCTOR_ENDPOINT, 1, "maria", "teste", "cardiologista", "Rua teste 1")
+add_if_undefined(
+    DOCTOR_ENDPOINT, 2, "jorge", "testudo", "dermatologista", "Rua teste 1"
+)
+add_if_undefined(DOCTOR_ENDPOINT, 3, "miguel", "barbiz", "ortopedista", "Rua teste 1")
+add_if_undefined(DOCTOR_ENDPOINT, 4, "carla", "bar", "neurologista", "Rua teste 1")
+add_if_undefined(DOCTOR_ENDPOINT, 5, "luciana", "foo", "oftalmologista", "Rua teste 1")
+add_if_undefined(
+    DOCTOR_ENDPOINT, 6, "joaquim", "foobar", "clínico geral", "Rua teste 1"
+)
 
 # id,user,doctor,datetime
-add_if_undefined(CONSULTATION_ENDPOINT, 1, 1, 1, "2021-03-25T12:00:00-03:00")
-add_if_undefined(CONSULTATION_ENDPOINT, 1, 1, 2, "2021-03-26T12:00:00-03:00")
-add_if_undefined(CONSULTATION_ENDPOINT, 1, 1, 3, "2021-03-27T12:00:00-03:00")
-add_if_undefined(CONSULTATION_ENDPOINT, 1, 1, 4, "2021-03-28T12:00:00-03:00")
-add_if_undefined(CONSULTATION_ENDPOINT, 1, 1, 5, "2021-03-29T12:00:00-03:00")
-add_if_undefined(CONSULTATION_ENDPOINT, 1, 1, 6, "2021-03-30T12:00:00-03:00")
+add_if_undefined(
+    CONSULTATION_ENDPOINT,
+    1,
+    1,
+    1,
+    "2021-03-25T12:00:00-03:00",
+    "2021-03-25T12:45:00-03:00",
+)
+add_if_undefined(
+    CONSULTATION_ENDPOINT,
+    1,
+    1,
+    2,
+    "2021-03-26T12:00:00-03:00",
+    "2021-03-26T12:45:00-03:00",
+)
+add_if_undefined(
+    CONSULTATION_ENDPOINT,
+    1,
+    1,
+    3,
+    "2021-03-27T12:00:00-03:00",
+    "2021-03-27T12:45:00-03:00",
+)
+add_if_undefined(
+    CONSULTATION_ENDPOINT,
+    1,
+    1,
+    4,
+    "2021-03-28T12:00:00-03:00",
+    "2021-03-28T12:45:00-03:00",
+)
+add_if_undefined(
+    CONSULTATION_ENDPOINT,
+    1,
+    1,
+    5,
+    "2021-03-29T12:00:00-03:00",
+    "2021-03-29T12:45:00-03:00",
+)
+
+add_if_undefined(
+    CONSULTATION_ENDPOINT,
+    1,
+    1,
+    6,
+    "2021-03-30T12:00:00-03:00",
+    "2021-03-30T12:45:00-03:00",
+)
