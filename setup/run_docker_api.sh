@@ -1,5 +1,6 @@
 #! /bin/bash
 # django api
+docker rm hospitalsystem-db 2>/dev/null
 docker stop hospitalsystem 2>/dev/null
 docker run -td --rm \
     -v "$(pwd)"/Backend/HospitalSystem:/code \
