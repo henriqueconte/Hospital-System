@@ -29,9 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # Replave db user by env var on deploy
-DB_USER = "ana"
+DB_USER = "Ana"
 DB_HOST = "localhost"
-DB_PASS = "ana123"
+DB_PASS = "1234"
 
 if "DB_USER" in os.environ:
     DB_USER = os.environ.get("DB_USER")

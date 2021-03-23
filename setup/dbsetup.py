@@ -3,7 +3,7 @@ import json
 
 USER_ENDPOINT = "http://localhost:8000/user/"
 DOCTOR_ENDPOINT = "http://localhost:8000/doctor/"
-CONSULTATION_ENDPOINT = "http://localhost:8000/consultation/"
+CONSULTATION_ENDPOINT = "http://localhost:8000/appointment/"
 
 
 def add_user(first_name, last_name, login, password):
@@ -34,7 +34,7 @@ def add_doctor(first_name, last_name, specialty, address):
         assert result.ok
 
 
-def add_consultation(user_id, doctor_id, start, end, extra_data=None):
+def add_appointment(user_id, doctor_id, start, end, extra_data=None):
     result = requests.post(
         CONSULTATION_ENDPOINT,
         json={
@@ -66,7 +66,7 @@ def add_if_undefined(endpoint, id, *args):
         elif endpoint == DOCTOR_ENDPOINT:
             add_doctor(*args)
         elif endpoint == CONSULTATION_ENDPOINT:
-            add_consultation(*args)
+            add_appointment(*args)
         print(get_model_object(endpoint, id))
     else:
         print(get_model_object(endpoint, id))

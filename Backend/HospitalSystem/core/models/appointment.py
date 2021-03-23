@@ -2,7 +2,7 @@ from django.db import models
 from .user import User
 from .doctor import Doctor
 
-class Consultation(models.Model):
+class Appointment(models.Model):
     doctor_id = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='doctor')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     start = models.DateTimeField(null=False, blank=False, db_index=True)
