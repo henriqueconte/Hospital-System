@@ -29,9 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # Replave db user by env var on deploy
-DB_USER = "ana"
+DB_USER = "Ana"
 DB_HOST = "localhost"
-DB_PASS = "ana123"
+DB_PASS = "1234"
 
 if "DB_USER" in os.environ:
     DB_USER = os.environ.get("DB_USER")
@@ -136,5 +136,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 ALLOWED_HOSTS = ["*"]

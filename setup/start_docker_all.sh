@@ -23,12 +23,12 @@ docker run -td --rm \
     hospitalsystem-db mysqld --default-authentication-plugin=mysql_native_password
 
 
-echo "waiting 30s for mysql startup"
+echo "waiting 3m for mysql startup"
 # wait for mysql startup
-sleep 30s
+sleep 3m
 
 # django api
-docker run -ti --rm \
+docker run -td --rm \
     -v "$(pwd)"/Backend/HospitalSystem:/code \
     --name hospitalsystem \
     -p 8000:8000 \
