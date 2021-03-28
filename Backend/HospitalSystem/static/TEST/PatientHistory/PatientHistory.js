@@ -2,20 +2,14 @@
 document.addEventListener('DOMContentLoaded', init, false);
 
 // Create a request variable and assign a new XMLHttpRequest object to it.
-var request = new XMLHttpRequest();
-var selectedAppointment;
+let selectedAppointment;
 
 function init() {
-
-    // Mock for creating itens
-    testAppointment4 = new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50')
-    testAppointment5 = new Appointment('5015', 'Joana Telles', '19:00-19:30')
-    testAppointment6 = new Appointment('5016', 'Marta Nascimenton', '19:30-20:00')
-    testAppointment7 = new Appointment('5017', 'Orlando Wender', '20:30-21:00')
-    createAppointmentItem(testAppointment4)
-    createAppointmentItem(testAppointment5)
-    createAppointmentItem(testAppointment6)
-    createAppointmentItem(testAppointment7)
+    getAppointmentsRequest(1).then(appointments => {
+        appointments.forEach(appointment => {
+            createAppointmentItem(appointment)
+        })
+    });
 }
 
 //*************************************************
@@ -90,6 +84,43 @@ function cancelAppointment() {
 //*************************************************
 // MARK: - Requests
 //*************************************************
-function getAppointmentsRequest() {
-    // TODO: Implement request to get patient appointments
+async function getAppointmentsRequest(clientId) {
+    try {
+        const appointments = await ApiClient.get(`appointment/${clientId}`);
+        return appointments.map(result => new Appointment(result.id, result.doctor.name, formatDateString(result.start, result.end)));
+    }
+    catch {
+        // Offline fallback
+        const mocked = [
+            new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50'),
+            new Appointment('5015', 'Joana Telles', '19:00-19:30'),
+            new Appointment('5016', 'Marta Nascimenton', '19:30-20:00'),
+            new Appointment('5017', 'Orlando Wender', '20:30-21:00')
+        ]
+        return mocked
+    }
+}
+
+function formatDateString(start, end) {
+    const dateStart = new Date(start);
+    const dateEnd = new Date(end);
+
+    const zeroPad = (n) => {
+        if (n < 10) {
+            return `0${n}`
+        }
+        return `${n}`
+    }
+
+    const formatDay = (date) => {
+        return `${date.getDate()}/${zeroPad(date.getMonth()+ 1) }/${date.getFullYear() - 2000}`
+    }
+
+    const formatHour = (date) => {
+        const hours = zeroPad(date.getHours())
+        const minutes = zeroPad(date.getMinutes())
+        return `${hours}:${minutes}`
+    }
+
+    return `${formatDay(dateStart)} - ${formatHour(dateStart)} às ${formatHour(dateEnd)}`
 }

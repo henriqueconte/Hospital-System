@@ -16,7 +16,7 @@ async function getData(path) {
     }
 }
 
-function postData(path, data) {
+async function postData(path, data) {
     let url = `http://${location.host}/${path}`
     try {
         let result = await fetch(url, {method: "POST", body: data})
@@ -27,7 +27,7 @@ function postData(path, data) {
 }
 
 
-function putData(path, data) {
+async function putData(path, data) {
     let url = `http://${location.host}/${path}`
     try {
         let result = await fetch(url, {method: "PUT", body: data})
@@ -38,7 +38,7 @@ function putData(path, data) {
 }
 
 
-function deleteData(path) {
+async function deleteData(path) {
     let url = `http://${location.host}/${path}`
     try {
         let result = await fetch(url, {method: "DELETE"})

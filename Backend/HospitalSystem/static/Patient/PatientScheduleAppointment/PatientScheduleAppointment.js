@@ -1,30 +1,27 @@
 // We need to wait DOM to load before calling other functions
 document.addEventListener('DOMContentLoaded', init, false);
 
-// Create a request variable and assign a new XMLHttpRequest object to it.
-var request = new XMLHttpRequest();
-var doctorsList;
-
 function init() {
-    doctorsList = getDoctorsRequest();
-    setDoctorsNameList();
+    getDoctorsRequest().then(result => {
+        setDoctorsNameList(result);
 
-    // Schedules an appointment
-    document.getElementById("scheduleAppointmentButton").addEventListener("click", function() {
-        scheduleAppointmentRequest()
+        // Schedules an appointment
+        document.getElementById("scheduleAppointmentButton").addEventListener("click", function() {
+            scheduleAppointmentRequest()
+        });
     });
 }
 
 //*************************************************
 // MARK: - Layout creation
 //*************************************************
-function setDoctorsNameList() {
+function setDoctorsNameList(doctorsList) {
     doctorNameDropDown = document.getElementById("doctorsNameList");
 
     doctorsList.forEach(doctorName => {
-        var option = document.createElement('option');
+        let option = document.createElement('option');
         option.setAttribute('value', doctorName)
-        var optionName = document.createTextNode(doctorName);
+        let optionName = document.createTextNode(doctorName);
         option.appendChild(optionName)
 
         doctorNameDropDown.appendChild(option)
@@ -34,15 +31,21 @@ function setDoctorsNameList() {
 //*************************************************
 // MARK: - Requests
 //*************************************************
-function getDoctorsRequest() {
-    // TODO: Implement request to get doctors list
-    return [
-        "Beatriz Ribeiro",
-        "João Nascimento",
-        "Martha Torres",
-        "Camila Oliveira",
-        "André Menezes"
-    ]
+async function getDoctorsRequest() {
+    try {
+        let doctors = await ApiClient.get("doctors");
+        return doctors.map(s => s.name);
+    } 
+    catch {
+    // Offline fallback
+        return [
+            "Beatriz Ribeiro",
+            "João Nascimento",
+            "Martha Torres",
+            "Camila Oliveira",
+            "André Menezes"
+        ]
+    }
 }
 
 function scheduleAppointmentRequest() {

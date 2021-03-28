@@ -48,10 +48,10 @@ add_user("mariazinha", "mariazinha", "teste", "1990-03-25", "FEMALE", "PATIENCE"
 
 
 # Doctors
-add_user("jorge", "jorge", "teste", "1980-03-23", "MALE", "DOCTOR")
-add_user("joaquinha", "joaquina", "teste", "1980-01-25", "FEMALE", "DOCTOR")
-add_user("miguel", "miguel", "teste", "1970-07-15", "MALE", "DOCTOR")
-add_user("carla", "carla", "teste", "1970-07-15", "FEMALE", "DOCTOR")
+add_user("Jorge Joaquim", "jorge", "teste", "1980-03-23", "MALE", "DOCTOR")
+add_user("Joana Joaquina", "joaquina", "teste", "1980-01-25", "FEMALE", "DOCTOR")
+add_user("Marcos Miguel", "marcos", "teste", "1970-07-15", "MALE", "DOCTOR")
+add_user("Jaqueline Jaquelina", "jaqueline", "teste", "1970-07-15", "FEMALE", "DOCTOR")
 
 # id,user,doctor,datetime
 # patience_id, doctor_id, start, end, address,extra_data=None
@@ -65,7 +65,7 @@ add_appointment(
 )
 
 add_appointment(
-    1, 4, "2021-03-27T12:00:00-03:00", "2021-03-27T12:45:00-03:00", "Rua Teste 2."
+    1, 4, "2021-03-27T12:00:00-03:00", "2021-03-27T12:45:00-03:00", "Avenida Testando"
 )
 
 
@@ -74,5 +74,5 @@ add_appointment(
     5,
     "2021-03-30T12:00:00-03:00",
     "2021-03-30T12:45:00-03:00",
-    "Rua Teste 3.",
+    "Rua Foobar.",
 )
