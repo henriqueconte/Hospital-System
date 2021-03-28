@@ -67,11 +67,12 @@ function setDetailsButtonListener(detailsButton) {
         const editingAppointment = document.getElementById(appointmentId);
         const doctorName = editingAppointment.getAttribute("doctorName");
         const appointmentHour = editingAppointment.getAttribute("appointmentHour");
+        const appointmentAddress = editingAppointment.getAttribute("appointmentAddress");
 
         document.getElementById("doctorNameForm").textContent = doctorName;
         document.getElementById("appointmentHourForm").textContent = appointmentHour;
-
-        selectedAppointment = new Appointment(appointmentId, doctorName, appointmentHour)
+        document.getElementById("appointmentAddressForm").textContent = appointmentAddress;
+        selectedAppointment = new Appointment(appointmentId, doctorName, appointmentHour, appointmentAddress)
     });
 }
 
@@ -92,17 +93,17 @@ async function getAppointmentsRequest(clientId) {
             new Appointment(
                 result.id, 
                 result.doctor.name, 
-                formatDateString(result.start, result.end)),
+                formatDateString(result.start, result.end),
                 result.address
-                );
+                ))
     }
     catch {
         // Offline fallback
         const mocked = [
-            new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50', "Endereco teste"),
-            new Appointment('5015', 'Joana Telles', '19:00-19:30', "Endereco teste"),
-            new Appointment('5016', 'Marta Nascimenton', '19:30-20:00', "Endereco teste"),
-            new Appointment('5017', 'Orlando Wender', '20:30-21:00', "Endereco teste")
+            new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50', "Av. Soledade, 569"),
+            new Appointment('5015', 'Joana Telles', '19:00-19:30', "Av. Soledade, 569"),
+            new Appointment('5016', 'Marta Nascimenton', '19:30-20:00', "Av. Soledade, 569"),
+            new Appointment('5017', 'Orlando Wender', '20:30-21:00', "Av. Soledade, 569")
         ]
         return mocked
     }

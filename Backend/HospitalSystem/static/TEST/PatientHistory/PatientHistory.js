@@ -33,6 +33,7 @@ function createAppointmentItem(appointment) {
     tr.setAttribute("id", appointment.id);
     tr.setAttribute("doctorName", appointment.doctorName);
     tr.setAttribute("appointmentHour", appointment.hour);
+    tr.setAttribute("appointmentAddress", appointment.address)
 
     appointmentsTableBody.appendChild(tr);
     tr.appendChild(doctorNameTd);
@@ -66,11 +67,12 @@ function setDetailsButtonListener(detailsButton) {
         const editingAppointment = document.getElementById(appointmentId);
         const doctorName = editingAppointment.getAttribute("doctorName");
         const appointmentHour = editingAppointment.getAttribute("appointmentHour");
+        const appointmentAddress = editingAppointment.getAttribute("appointmentAddress");
 
         document.getElementById("doctorNameForm").textContent = doctorName;
         document.getElementById("appointmentHourForm").textContent = appointmentHour;
-
-        selectedAppointment = new Appointment(appointmentId, doctorName, appointmentHour)
+        document.getElementById("appointmentAddressForm").textContent = appointmentAddress;
+        selectedAppointment = new Appointment(appointmentId, doctorName, appointmentHour, appointmentAddress)
     });
 }
 
@@ -87,15 +89,21 @@ function cancelAppointment() {
 async function getAppointmentsRequest(clientId) {
     try {
         const appointments = await ApiClient.get(`appointment/${clientId}`);
-        return appointments.map(result => new Appointment(result.id, result.doctor.name, formatDateString(result.start, result.end)));
+        return appointments.map(result => 
+            new Appointment(
+                result.id, 
+                result.doctor.name, 
+                formatDateString(result.start, result.end),
+                result.address
+                ))
     }
     catch {
         // Offline fallback
         const mocked = [
-            new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50'),
-            new Appointment('5015', 'Joana Telles', '19:00-19:30'),
-            new Appointment('5016', 'Marta Nascimenton', '19:30-20:00'),
-            new Appointment('5017', 'Orlando Wender', '20:30-21:00')
+            new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50', "Endereco teste"),
+            new Appointment('5015', 'Joana Telles', '19:00-19:30', "Endereco teste"),
+            new Appointment('5016', 'Marta Nascimenton', '19:30-20:00', "Endereco teste"),
+            new Appointment('5017', 'Orlando Wender', '20:30-21:00', "Endereco teste")
         ]
         return mocked
     }
@@ -113,7 +121,7 @@ function formatDateString(start, end) {
     }
 
     const formatDay = (date) => {
-        return `${date.getDate()}/${zeroPad(date.getMonth()+ 1) }/${date.getFullYear() - 2000}`
+        return `${date.getDate()}/${zeroPad(date.getMonth() + 1)}/${date.getFullYear() - 2000}`
     }
 
     const formatHour = (date) => {
