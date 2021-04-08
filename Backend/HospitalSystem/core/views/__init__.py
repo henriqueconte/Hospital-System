@@ -1,3 +1,3 @@
 from .user import UserView
-from .doctor import DoctorView
 from .appointment import AppointmentView
+from .doctors import DoctorsView

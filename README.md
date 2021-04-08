@@ -12,7 +12,7 @@ http://54.232.147.115
 
 - Host: 54.232.147.115
 - Port: 3306
-- Senha (temporaria): replace_me_09_03_21
+- Senha (temporaria): segredo
 - User: root
 
 ## Rodando em desenvolvimento:
