@@ -36,22 +36,42 @@ function createAppointmentItem(appointment) {
     const appointmentsTableBody = document.getElementById("appointmentsTableBody");
     const tr = document.createElement("tr");
     const patientNameTd = document.createElement("td");
+    const doctorNameTd = document.createElement("td");
     const hourTd = document.createElement("td");
+    const confirmTd = document.createElement("td");
     const cancelTd = document.createElement("td");
 
+    const confirmButton = createConfirmButton(appointment.id);
     const cancelButton = createcancelButton(appointment.id);
-
-    patientNameTd.textContent = appointment.doctorName
-    hourTd.textContent = appointment.hour
+    
+    // TODO: Insert real pacient name
+    patientNameTd.textContent = "Antonio Ferreira"
+    doctorNameTd.textContent = appointment.doctorName;
+    hourTd.textContent = appointment.hour;
 
     // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
     tr.setAttribute("id", appointment.id);
 
     appointmentsTableBody.appendChild(tr);
     tr.appendChild(patientNameTd);
+    tr.appendChild(doctorNameTd);
     tr.appendChild(hourTd);
+    tr.appendChild(confirmTd);
     tr.appendChild(cancelTd);
+    confirmTd.appendChild(confirmButton);
     cancelTd.appendChild(cancelButton);
+}
+
+function createConfirmButton(buttonID) {
+    const confirmButton = document.createElement("button");
+
+    confirmButton.setAttribute("id", "confirmButton" + buttonID);
+    confirmButton.setAttribute("type", "button");
+    confirmButton.setAttribute("class", "btn font-weight-bold text-primary");
+    confirmButton.innerHTML = "<u> Finalizar consulta </u>";
+    setConfirmButtonListener(confirmButton)
+
+    return confirmButton;
 }
 
 function createcancelButton(buttonID) {
@@ -74,11 +94,34 @@ function createcancelButton(buttonID) {
 function setcancelButtonListener(cancelButton) {
     cancelButton.addEventListener('click', function () {
         const cancelButtonID = cancelButton.getAttribute("id");
-        const appointmentId = cancelButtonID.replace("cancelButton", "");
-        const editingAppointment = document.getElementById(appointmentId);
+        const appointmentId = cancelButtonID.replace("cancelButton", ""); 
+
+        const confirmButton = document.getElementById("confirmButton" + appointmentId)
+        confirmButton.disabled = true;
+        confirmButton.classList.remove("text-primary")
+        confirmButton.textContent = "Finalizar consulta"
 
         selectedAppointment = new Appointment(appointmentId, "", "")
     });
+}
+
+function setConfirmButtonListener(confirmButton) {
+    confirmButton.addEventListener('click', function() {
+        confirmButtonID = confirmButton.getAttribute("id");
+        const appointmentId = confirmButtonID.replace('confirmButton', "");
+        confirmButton.disabled = true;
+        confirmButton.textContent = "Consulta finalizada"
+        confirmButton.classList.remove("text-primary")
+
+        const cancelButton = document.getElementById("cancelButton" + appointmentId)
+        cancelButton.disabled = true;
+        cancelButton.classList.remove("text-danger")
+        cancelButton.textContent = "Cancelar consulta"
+
+        selectedAppointment = new Appointment(appointmentId, "", "")
+        
+        finishAppointmentRequest()
+    })
 }
 
 function cancelAppointment() {
@@ -98,4 +141,8 @@ function cancelAppointmentRequest() {
 
 function getAppointmentsRequest() {
     // TODO: Implement request to get patient appointments
+}
+
+function finishAppointmentRequest() {
+    // TODO: Implement request to update appointment status to "Finished"
 }
