@@ -11,8 +11,6 @@ from django.forms.models import model_to_dict
 class AppointmentView(APIView):
 
     def get_appointment_objects(self, user_type, user_id, appointment_status):
-        print(user_type)
-        print(user_id)
         if user_type == User.DOCTOR:
             appointment_objects = Appointment.objects.filter(
                 doctor=user_id)
