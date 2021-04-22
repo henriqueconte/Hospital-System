@@ -12,7 +12,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         print(instance.doctor)
-        print(instance.patience)
+        print(instance.patient)
         response['doctor'] = UserSerializer(instance.doctor).data
-        response['patience'] = UserSerializer(instance.patience).data
+        response['patient'] = UserSerializer(instance.patient).data
         return response

@@ -20,11 +20,11 @@ class User(models.Model):
 
     RECEPTIONIST = "RECEPTIONIST"
     DOCTOR = "DOCTOR"
-    PATIENCE = "PATIENCE"
+    PATIENT = "PATIENT"
 
     USER_TYPE_CHOICES = (
         (RECEPTIONIST, "receptionist"),
         (DOCTOR, "doctor"),
-        (PATIENCE, "patience"),
+        (PATIENT, "patient"),
     )
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, null=True, blank=True)
