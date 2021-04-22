@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', init, false);
 let selectedAppointment;
 
 function init() {
+
+    // Save exam requisition
+    document.getElementById("saveExamRequisition").addEventListener("click", function() {
+        updateExamRequisition();
+    });
+
     getAppointmentsRequest(1).then(appointments => {
         appointments.forEach(appointment => {
             createAppointmentItem(appointment)
@@ -20,67 +26,59 @@ function createAppointmentItem(appointment) {
     const tr = document.createElement("tr");
     const doctorNameTd = document.createElement("td");
     const hourTd = document.createElement("td");
-    const medicalRequisitionTd = document.createElement("td");
-    const detailsTd = document.createElement("td");
+    const requisitionTd = document.createElement("td");
 
-    const detailsButton = createDetailsButton(appointment.id);
+    const requisitionButton = createrequisitionButton(appointment.id);
 
     doctorNameTd.textContent = appointment.doctorName
     hourTd.textContent = appointment.hour
-    medicalRequisitionTd.textContent = "Não há requisição médica disponível"
 
     // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
     tr.setAttribute("id", appointment.id);
-    tr.setAttribute("doctorName", appointment.doctorName);
-    tr.setAttribute("appointmentHour", appointment.hour);
-    tr.setAttribute("appointmentAddress", appointment.address)
+    tr.setAttribute("examRequisition", "Resfenol duas vezes ao dia.")
 
     appointmentsTableBody.appendChild(tr);
     tr.appendChild(doctorNameTd);
     tr.appendChild(hourTd);
-    tr.append(medicalRequisitionTd);
-    tr.appendChild(detailsTd);
-    detailsTd.appendChild(detailsButton);
+    tr.appendChild(requisitionTd);
+    requisitionTd.appendChild(requisitionButton);
 }
 
-function createDetailsButton(buttonID) {
-    const detailsButton = document.createElement("button");
+function createrequisitionButton(buttonID) {
+    const requisitionButton = document.createElement("button");
 
-    detailsButton.setAttribute("id", "seeDetailsButton" + buttonID);
-    detailsButton.setAttribute("type", "button");
-    detailsButton.setAttribute("class", "btn font-weight-bold");
-    detailsButton.setAttribute("data-toggle", "modal");
-    detailsButton.setAttribute("data-target", "#seeDetailsModal");
-    detailsButton.innerHTML = "<u> Ver detalhes </u>";
-    setDetailsButtonListener(detailsButton)
+    requisitionButton.setAttribute("id", "seeRequisitionButton" + buttonID);
+    requisitionButton.setAttribute("type", "button");
+    requisitionButton.setAttribute("class", "btn font-weight-bold");
+    requisitionButton.setAttribute("data-toggle", "modal");
+    requisitionButton.setAttribute("data-target", "#seeRequisitionModal");
+    requisitionButton.innerHTML = "<u> Inserir requisição para exame </u>";
+    setRequisitionButtonListener(requisitionButton)
 
-    return detailsButton;
+    return requisitionButton;
 }
 
 //*************************************************
 // MARK: - Listeners configuration
 //*************************************************
-function setDetailsButtonListener(detailsButton) {
-    detailsButton.addEventListener('click', function () {
-        const detailsButtonID = detailsButton.getAttribute("id");
-        const appointmentId = detailsButtonID.replace("seeDetailsButton", "");
+function setRequisitionButtonListener(requisitionButton) {
+    requisitionButton.addEventListener('click', function () {
+        const requisitionButtonID = requisitionButton.getAttribute("id");
+        const appointmentId = requisitionButtonID.replace("seeRequisitionButton", "");
         const editingAppointment = document.getElementById(appointmentId);
-        const doctorName = editingAppointment.getAttribute("doctorName");
-        const appointmentHour = editingAppointment.getAttribute("appointmentHour");
-        const appointmentAddress = editingAppointment.getAttribute("appointmentAddress");
+        const examRequsition = editingAppointment.getAttribute("examRequisition");
 
-        document.getElementById("doctorNameForm").textContent = doctorName;
-        document.getElementById("appointmentHourForm").textContent = appointmentHour;
-        document.getElementById("appointmentAddressForm").textContent = appointmentAddress;
-        selectedAppointment = new Appointment(appointmentId, doctorName, appointmentHour, appointmentAddress)
+        document.getElementById("examRequisitionTextBox").value = examRequsition;
+        
+        selectedAppointment = new Appointment(appointmentId, "", "", "")
     });
 }
 
 function cancelAppointment() {
     cancelAppointmentRequest()
-    detailsButton = document.getElementById("seeDetailsButton" + selectedAppointment.id);
-    detailsButton.textContent = "Consulta cancelada";
-    detailsButton.disabled = true;
+    requisitionButton = document.getElementById("seerequisitionButton" + selectedAppointment.id);
+    requisitionButton.textContent = "Consulta cancelada";
+    requisitionButton.disabled = true;
 }
 
 //*************************************************
@@ -107,6 +105,14 @@ async function getAppointmentsRequest(clientId) {
         ]
         return mocked
     }
+}
+
+function updateExamRequisition() {
+    // Updates locally the exam requisition text box content
+    currentExamRequisitionText = document.getElementById("examRequisitionTextBox").value;
+    document.getElementById(selectedAppointment.id).setAttribute("examRequisition", currentExamRequisitionText);
+
+    // TODO: Implement request to update appointment
 }
 
 function formatDateString(start, end) {
