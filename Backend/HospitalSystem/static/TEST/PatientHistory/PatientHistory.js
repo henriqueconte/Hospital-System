@@ -100,10 +100,10 @@ async function getAppointmentsRequest(clientId) {
     catch {
         // Offline fallback
         const mocked = [
-            new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50', "Endereco teste"),
-            new Appointment('5015', 'Joana Telles', '19:00-19:30', "Endereco teste"),
-            new Appointment('5016', 'Marta Nascimenton', '19:30-20:00', "Endereco teste"),
-            new Appointment('5017', 'Orlando Wender', '20:30-21:00', "Endereco teste")
+            new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50', "Av. Soledade, 569"),
+            new Appointment('5015', 'Joana Telles', '19:00-19:30', "Av. Soledade, 569"),
+            new Appointment('5016', 'Marta Nascimenton', '19:30-20:00', "Av. Soledade, 569"),
+            new Appointment('5017', 'Orlando Wender', '20:30-21:00', "Av. Soledade, 569")
         ]
         return mocked
     }
