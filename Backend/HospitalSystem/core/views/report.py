@@ -15,12 +15,11 @@ from core.serializers import UserSerializer
 
 NUMBER_OF_MONTHS = 12
 
-
 class ReportView(APIView):
     class ReportType:
-        APPOINTMENTS_PER_YEAR = 1
-        APPOINTMENTS_PER_MONTH = 2
-        MOST_REQUESTED_DOCTORS = 3
+        APPOINTMENTS_PER_YEAR = '1'
+        APPOINTMENTS_PER_MONTH = '2'
+        MOST_REQUESTED_DOCTORS = '3'
 
     def get_appointments_per_year(self):
         result = Appointment.objects.filter(start__isnull=False).annotate(year=ExtractYear('start')).values('year').annotate(yearly_count=Count('year')).order_by()
@@ -44,22 +43,16 @@ class ReportView(APIView):
 
         return appointments_per_month
 
-    # def get(self, request, year):
-    #     appointments_per_month = self.get_appointments_per_month(year)
-    #     data = {
-    #         "appointments_per_month": appointments_per_month
-    #     }
-    #     return Response(data, status=201)
 
-    def get_report_objects(self, report_type, year=None):
-        if report_type == ReportType.APPOINTMENTS_PER_YEAR:
-            self.get_appointments_per_year()
-        elif report_type == ReportType.APPOINTMENTS_PER_MONTH:
-            self.get_appointments_per_month(year)
-        elif report_type == ReportType.MOST_REQUESTED_DOCTORS:
-            self.get_most_requested_doctors()
+    def get_report_results(self, report_type, year=None):
+        if report_type == self.ReportType.APPOINTMENTS_PER_YEAR:
+            return self.get_appointments_per_year()
+        elif report_type == self.ReportType.APPOINTMENTS_PER_MONTH:
+            return self.get_appointments_per_month(year)
+        elif report_type == self.ReportType.MOST_REQUESTED_DOCTORS:
+            return self.get_most_requested_doctors()
         else:
-            print("Request errado, sua BESTA")
+            print("Request errado, sua BESTA", report_type)
 
     def get(self, request):
         """
@@ -69,6 +62,8 @@ class ReportView(APIView):
         """
         report_type = self.request.query_params.get('report_type', None)
         year = self.request.query_params.get('year', None)
+        if year is not None and year.isnumeric():
+            year = int(year)
 
         report_results = self.get_report_results(report_type, year)
 
