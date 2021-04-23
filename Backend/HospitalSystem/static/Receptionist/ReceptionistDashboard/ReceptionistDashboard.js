@@ -151,7 +151,8 @@ async function getAppointmentsRequest() {
     console.log(appointments);
 
     return appointments;
-  } catch {
+  } catch(err) {
+    console.error(err);
     // offline fallback
     testAppointment1 = new Appointment("5011", "Amanda Pires", "12:10-12:30");
     testAppointment2 = new Appointment(
