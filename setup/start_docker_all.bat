@@ -17,7 +17,6 @@ docker run -td --rm ^
     --name hospitalsystem-db ^
     -p 3306:3306 ^
     --network hospitalsystem-net ^
-    -v %cd%/mysql_data:/var/lib/mysql ^
     hospitalsystem-db mysqld --default-authentication-plugin=mysql_native_password
 
 echo "waiting 3m for mysql startup"

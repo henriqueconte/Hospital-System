@@ -145,7 +145,7 @@ async function getAppointmentsRequest() {
       )
     ).map(
       (appointment) =>
-        new Appointment(appointment.id, appointment.doctor.name, data.start)
+        new Appointment(appointment.id, appointment.doctor.name, appointment.start)
     );
 
     console.log(appointments);
