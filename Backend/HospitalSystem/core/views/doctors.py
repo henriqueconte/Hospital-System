@@ -7,11 +7,11 @@ from core.serializers import UserSerializer
 
 class DoctorsView(APIView):
 
-  def get(self, request):
-    try:
-        user_queryset = User.objects.filter(user_type="DOCTOR")
-        user_serializer = UserSerializer(user_queryset, many=True)
-    except User.DoesNotExist:
-        return Response({'errors': 'This user does not exist.'}, status=400)
+    def get(self, request):
+        try:
+            user_queryset = User.objects.filter(user_type=User.DOCTOR)
+            user_serializer = UserSerializer(user_queryset, many=True)
+        except User.DoesNotExist:
+            return Response({'errors': 'This user does not exist.'}, status=400)
 
-    return Response(user_serializer.data)
+        return Response(user_serializer.data)

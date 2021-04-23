@@ -19,7 +19,7 @@ class AppointmentView(APIView):
             appointment_objects = Appointment.objects.filter(
                 patient=user_id)
 
-        elif user_type == User.RECEPTIONIST:
+        else:
             appointment_objects = Appointment.objects.filter()
 
         if appointment_status:
