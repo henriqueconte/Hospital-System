@@ -14,7 +14,9 @@ function init() {
     });
 
   getAppointmentsRequest().then((s) => {
-    createAppointmentItem(s);
+    s.forEach(i => {
+      createAppointmentItem(i);
+    })
     console.log(s);
   });
 }
