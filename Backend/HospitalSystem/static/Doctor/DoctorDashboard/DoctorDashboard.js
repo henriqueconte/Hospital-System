@@ -91,7 +91,7 @@ async function getAppointmentsRequest() {
     try {
       const appointments = (
         await ApiClient.get(
-          `appointment?user_type=DOCTOR&appointment_status=DONE`
+          `appointment?user_type=DOCTOR&appointment_status=DONE&user_id=9`
         )
       ).map(
         (appointment) =>
