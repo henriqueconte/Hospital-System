@@ -15,6 +15,7 @@ function init() {
 
   getAppointmentsRequest().then((s) => {
     createAppointmentItem(s);
+    console.log(s);
   });
 }
 
@@ -138,9 +139,14 @@ function cancelAppointmentRequest() {
 
 async function getAppointmentsRequest() {
   try {
-    const appointments = await ApiClient.get(
-      `appointment?user_type=RECEPTIONIST&appointment_status=FINISHED`
-    ).map((data) => new Appointment(data.id, data.doctor.name, data.start));
+    const appointments = (
+      await ApiClient.get(
+        `appointment?user_type=RECEPTIONIST&appointment_status=FINISHED`
+      )
+    ).map(
+      (appointment) =>
+        new Appointment(appointment.id, appointment.doctor.name, data.start)
+    );
 
     console.log(appointments);
 
