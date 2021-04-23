@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "kd#jafh_%cpa2iud7ll%$baz^@qh8)l@&k!y^lm)aot52syk+#"
+SECRET_KEY = "uAKIATBKJ7TE66K5U3MO"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -29,9 +29,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 # Replave db user by env var on deploy
-DB_USER = "ana"
-DB_HOST = "localhost"
-DB_PASS = "ana123"
+DB_USER = "root"
+DB_HOST = "54.232.147.115"
+DB_PASS = "uYS0CsCb"
 
 if "DB_USER" in os.environ:
     DB_USER = os.environ.get("DB_USER")
