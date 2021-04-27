@@ -9,7 +9,7 @@ class LoginView(APIView):
 
     def get_user_objects(self, user_login, user_password):
         try:
-            user_queryset = User.objects.filter(login=user_login, password=user_password)
+            user_queryset = User.objects.get(login=user_login, password=user_password)
         except User.DoesNotExist:
             raise User.DoesNotExist
 
@@ -29,9 +29,9 @@ class LoginView(APIView):
             user_objects = self.get_user_objects(
                 user_login, user_password)
         except User.DoesNotExist:
-            raise User.DoesNotExist
+            return Response({"errors": "Invalid login."}, status=400)
 
-        user_serializer = UserSerializer(user_objects, many=True)
+        user_serializer = UserSerializer(user_objects)
         return Response(user_serializer.data, status=201)
 
 
