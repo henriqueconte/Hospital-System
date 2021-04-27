@@ -1,8 +1,6 @@
 import datetime
 import calendar
 
-from enum import Enum
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -26,7 +24,7 @@ class ReportView(APIView):
         return result
 
     def get_most_requested_doctors(self):
-        result = Appointment.objects.values('doctor').annotate(appointments_count=Count('id')).order_by('-appointments_count')
+        result = User.objects.values('name').filter(doctor__isnull=False).annotate(appointments_count=Count('id')).order_by('-appointments_count')
         return result
 
     def get_appointments_per_month(self, year):
