@@ -9,7 +9,7 @@ class LoginView(APIView):
 
     def get_user_objects(self, user_login, user_password):
         try:
-            user_queryset = User.objects.filter(login="aaaaa", password="ana123")
+            user_queryset = User.objects.filter(login=user_login, password=user_password)
         except User.DoesNotExist:
             raise User.DoesNotExist
 
