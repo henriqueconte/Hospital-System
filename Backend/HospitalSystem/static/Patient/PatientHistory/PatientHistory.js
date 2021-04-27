@@ -86,9 +86,9 @@ function cancelAppointment() {
 //*************************************************
 // MARK: - Requests
 //*************************************************
-async function getAppointmentsRequest(clientId) {
+async function getAppointmentsRequest(patientId) {
     try {
-        const appointments = await ApiClient.get(`appointment/${clientId}`);
+        const appointments = await ApiClient.get(`appointment?user_type=PATIENT&appointment_status=FINISHED&user_id=${patientId}`);
         return appointments.map(result => 
             new Appointment(
                 result.id, 

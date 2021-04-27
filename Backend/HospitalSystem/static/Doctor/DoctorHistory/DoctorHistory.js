@@ -11,7 +11,7 @@ function init() {
         updateExamRequisition();
     });
 
-    getAppointmentsRequest(1).then(appointments => {
+    getAppointmentsRequest(4).then(appointments => {
         appointments.forEach(appointment => {
             createAppointmentItem(appointment)
         })
@@ -84,9 +84,9 @@ function cancelAppointment() {
 //*************************************************
 // MARK: - Requests
 //*************************************************
-async function getAppointmentsRequest(clientId) {
+async function getAppointmentsRequest(doctorUserId) {
     try {
-        const appointments = await ApiClient.get(`appointment/${clientId}`);
+        const appointments = await ApiClient.get(`appointment?user_type=DOCTOR&appointment_status=ACTIVE&user_id=${doctorUserId}`);
         return appointments.map(result => 
             new Appointment(
                 result.id, 
