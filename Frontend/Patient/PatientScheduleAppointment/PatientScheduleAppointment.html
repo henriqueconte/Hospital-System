@@ -70,33 +70,68 @@
             <div class="col", style="max-width: 45%;">
 
                 <!-- DOCTOR NAME -->
-                <div class="form-group">
-                    <label class ="font-weight-bold">Médico</label>
-                    <select class="form-control" id="doctorsNameList" required>
-                        <!-- <option>Café</option>
-                        <option>Italiano</option>
-                        <option>Tailandês</option>
-                        <option>Padaria</option>
-                        <option>Japonês</option> -->
+                <div class="form-group mb-4">
+                    <label class ="font-weight-bold">Especialidade</label>
+                    <select class="form-control" id="specialityList" required>
+                        <option>-</option>
+                        <option>Cardiologista</option>
+                        <option>Oftalmologista</option>
+                        <option>Dermatologista</option>
+                        <option>Oncologista</option>
+                        <option>Pediatra</option>
                     </select>
                 </div>
 
-                &nbsp;
+                <!-- DOCTOR NAME -->
+                <div id="doctorNameDropdown" class="form-group" hidden>
+                    <label class ="font-weight-bold">Médico</label>
+                    <select class="form-control" id="doctorsNameList" required>
+                        <!-- Options created on JS file -->
+                    </select>
+                </div>
+
+                &nbsp;     
 
                 <!-- APPOINTMENT DATE -->
-                <div class="form-group">
+                <div id="dateDropdown" class="form-group" hidden>
                     <label class="font-weight-bold">Data da consulta</label>
-                    <input class="form-control" id="appointmentDateForm" placeholder="Ex: 15/08/2021" required>
-                </div>       
+                    <select class="form-control" id="appointmentDateForm" required>
+                        <!-- Options created on JS file -->
+                    </select>
+                </div>    
+
 
                 &nbsp;
-
                 <!-- SCHEDULE APPOINTMENT BUTTON -->
-                <div class="p-2 text-center" >
-                    <button class="btn btn-primary" id="scheduleAppointmentButton" data-toggle="modal">AGENDAR</button>
+                <div class="p-2 text-center">
+                    <button class="btn btn-primary" type="button" id="scheduleAppointmentButton" data-target="#modal" data-toggle="modal" hidden>AGENDAR</button>
                 </div>
             </div>
 
+
+    <!-- APPOINTMENT CONFIRMATION POP UP -->
+     <div class="modal fade" id="modal">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <div class="col-auto">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="false">&times;</span>
+                    </button>
+                  </div>
+                </div>
+                <!-- MODAL TITLE -->
+                <div class="row justify-content-md-center mt-4 mb-4">
+                    <h6 id="modalTitle"></h6>
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
