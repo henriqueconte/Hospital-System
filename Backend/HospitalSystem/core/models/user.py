@@ -29,6 +29,12 @@ class User(models.Model):
     )
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, null=True, blank=True)
 
+    CARDIOLOGIST =  "CARDIOLOGIST"
+    OPHTALMOLOGIST = "OPHTALMOLOGIST"
+    DERMATOLOGIST = "DERMATOLOGIST"
+    ONCOLOGIST = "ONCOLOGIST"
+    PEDIATRICIAN = "PEDIATRICIAN"
+
     SPECIALTY_CHOICES = (
         (CARDIOLOGIST, "Cardiologist"),
         (OPHTALMOLOGIST, "Ophtalmologist"),
