@@ -1,5 +1,6 @@
 // We need to wait DOM to load before calling other functions
 document.addEventListener('DOMContentLoaded', init, false);
+const loggedUser = sessionStorage.getItem('loggedUser');
 
 function init() {
     document.getElementById('specialityList').addEventListener('change', function() {
