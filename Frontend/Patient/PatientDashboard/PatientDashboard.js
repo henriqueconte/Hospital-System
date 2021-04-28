@@ -121,12 +121,12 @@ function cancelAppointment() {
 //*************************************************
 function cancelAppointmentRequest() {
     var request = new XMLHttpRequest();
-    request.open('PUT', 'http://54.232.147.115/appointment/' + selectedAppointment.id, true);
+    request.open('PUT', 'http://54.232.147.115/appointment/?appointment_id=' + selectedAppointment.id, true);
     request.setRequestHeader('Content-Type', 'application/json');
 
     const params = {
         "doctor" : selectedAppointment.doctor.id,
-        "patience" : selectedAppointment.patient.id,
+        "patient" : selectedAppointment.patient.id,
         "start" : selectedAppointment.startDate,
         "end" : selectedAppointment.endDate,
         "address" : selectedAppointment.address,
