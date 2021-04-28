@@ -2,20 +2,28 @@
 document.addEventListener('DOMContentLoaded', init, false);
 
 // Create a request variable and assign a new XMLHttpRequest object to it.
-let selectedAppointment;
+var selectedAppointment;
+var appointmentList = [];
 
 function init() {
-    getAppointmentsRequest(1).then(appointments => {
-        appointments.forEach(appointment => {
-            createAppointmentItem(appointment)
-        })
-    });
+    getAppointmentsRequest();
 }
 
 //*************************************************
 // MARK: - Layout creation
 //*************************************************
 function createAppointmentItem(appointment) {
+    appointmentList.push(new Appointment(
+        appointment.id, 
+        appointment.startDate, 
+        appointment.endDate, 
+        appointment.address,
+        appointment.status, 
+        appointment.prescription,
+        new User(appointment.doctor.id, appointment.doctor.name, appointment.doctor.login, appointment.doctor.birth_date, appointment.doctor.gender, appointment.doctor.user_type), 
+        new User(appointment.patient.id, appointment.patient.name, appointment.patient.login, appointment.patient.birth_date, appointment.patient.gender, appointment.patient.user_type)
+    ));
+
     const appointmentsTableBody = document.getElementById("appointmentsTableBody");
     const tr = document.createElement("tr");
     const doctorNameTd = document.createElement("td");
@@ -25,14 +33,26 @@ function createAppointmentItem(appointment) {
 
     const detailsButton = createDetailsButton(appointment.id);
 
-    doctorNameTd.textContent = appointment.doctorName
-    hourTd.textContent = appointment.hour
-    medicalRequisitionTd.textContent = "Não há requisição médica disponível"
+    doctorNameTd.textContent = appointment.doctor.name
+    if (appointment.start == null) {
+        hourTd.textContent = "Horário indefinido";
+    } else {
+        const date = new Date(appointment.start);
+        const day = date.getDay();
+        const month = date.getMonth();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
+        const formattedDay = day < 10 ? "0" + day : day
+        const formattedMinutes = minutes == 0 ? minutes + "0" : minutes
+        hourTd.textContent = formattedDay + "/" + month + ", às " + hour + "h" + formattedMinutes
+    }
+
+    medicalRequisitionTd.textContent = appointment.prescription;
 
     // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
     tr.setAttribute("id", appointment.id);
-    tr.setAttribute("doctorName", appointment.doctorName);
-    tr.setAttribute("appointmentHour", appointment.hour);
+    tr.setAttribute("doctorName", appointment.doctor.name);
+    tr.setAttribute("appointmentHour", hourTd.textContent);
     tr.setAttribute("appointmentAddress", appointment.address)
 
     appointmentsTableBody.appendChild(tr);
@@ -86,27 +106,23 @@ function cancelAppointment() {
 //*************************************************
 // MARK: - Requests
 //*************************************************
-async function getAppointmentsRequest(patientId) {
-    try {
-        const appointments = await ApiClient.get(`appointment?user_type=PATIENT&appointment_status=FINISHED&user_id=${patientId}`);
-        return appointments.map(result => 
-            new Appointment(
-                result.id, 
-                result.doctor.name, 
-                formatDateString(result.start, result.end),
-                result.address
-                ))
+function getAppointmentsRequest() {
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://54.232.147.115/appointment/?user_id=2', true);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    request.onload = function() {
+        var response = JSON.parse(this.response);
+
+        response.forEach((appointment) => {
+            if (appointment.status == "DONE" || appointment.status == "CANCELLED") {
+                createAppointmentItem(appointment);
+            }
+        })
+        console.log(response);
     }
-    catch {
-        // Offline fallback
-        const mocked = [
-            new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50', "Av. Soledade, 569"),
-            new Appointment('5015', 'Joana Telles', '19:00-19:30', "Av. Soledade, 569"),
-            new Appointment('5016', 'Marta Nascimenton', '19:30-20:00', "Av. Soledade, 569"),
-            new Appointment('5017', 'Orlando Wender', '20:30-21:00', "Av. Soledade, 569")
-        ]
-        return mocked
-    }
+
+    request.send();
 }
 
 function formatDateString(start, end) {
