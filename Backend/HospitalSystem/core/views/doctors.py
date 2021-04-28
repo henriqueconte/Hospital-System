@@ -10,6 +10,11 @@ class DoctorsView(APIView):
     def get(self, request):
         try:
             user_queryset = User.objects.filter(user_type=User.DOCTOR)
+
+            specialty = self.request.query_params.get('specialty', None)
+            if specialty is not None:
+                user_queryset = user_queryset.filter(doctor_specialty=specialty)
+
             user_serializer = UserSerializer(user_queryset, many=True)
         except User.DoesNotExist:
             return Response({'errors': 'This user does not exist.'}, status=400)
