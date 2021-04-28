@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', init, false);
 // Create a request variable and assign a new XMLHttpRequest object to it.
 var request = new XMLHttpRequest();
 var selectedAppointment;
+var appointmentList = [];
 
 function init() {
 
@@ -12,18 +13,24 @@ function init() {
         cancelAppointment();
     });
 
-    getAppointmentsRequest().then((s) => {
-        s.forEach(i => {
-          createAppointmentItem(i);
-        })
-        console.log(s);
-      });
+    getAppointmentsRequest();
 }
 
 //*************************************************
 // MARK: - Layout creation
 //*************************************************
 function createAppointmentItem(appointment) {
+    appointmentList.push(new Appointment(
+        appointment.id, 
+        appointment.startDate, 
+        appointment.endDate, 
+        appointment.address,
+        appointment.status, 
+        appointment.prescription,
+        new User(appointment.doctor.id, appointment.doctor.name, appointment.doctor.login, appointment.doctor.birth_date, appointment.doctor.gender, appointment.doctor.user_type), 
+        new User(appointment.patient.id, appointment.patient.name, appointment.patient.login, appointment.patient.birth_date, appointment.patient.gender, appointment.patient.user_type)
+    ));
+    
     const appointmentsTableBody = document.getElementById("appointmentsTableBody");
     const tr = document.createElement("tr");
     const patientNameTd = document.createElement("td");
@@ -32,8 +39,19 @@ function createAppointmentItem(appointment) {
 
     const cancelButton = createcancelButton(appointment.id);
 
-    patientNameTd.textContent = appointment.doctorName
-    hourTd.textContent = appointment.hour
+    patientNameTd.textContent = appointment.doctor.name;
+    if (appointment.start == null) {
+        hourTd.textContent = "Horário indefinido";
+    } else {
+        const date = new Date(appointment.start);
+        const day = date.getDay();
+        const month = date.getMonth();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
+        const formattedDay = day < 10 ? "0" + day : day
+        const formattedMinutes = minutes == 0 ? minutes + "0" : minutes
+        hourTd.textContent = formattedDay + "/" + month + ", às " + hour + "h" + formattedMinutes
+    }
 
     // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
     tr.setAttribute("id", appointment.id);
@@ -87,57 +105,21 @@ function cancelAppointmentRequest() {
     // TODO: Implement request to cancel an appointment
 }
 
-async function getAppointmentsRequest() {
-    try {
-      const appointments = (
-        await ApiClient.get(
-          `appointment?user_type=DOCTOR&appointment_status=DONE&user_id=9`
-        )
-      ).map(
-        (appointment) =>
-          new Appointment(appointment.id, appointment.doctor.name, appointment.start)
-      );
-      console.log(appointments);
-  
-      return appointments;
-    } catch(err) {
-      console.error(err);
+function getAppointmentsRequest() {
+  var request = new XMLHttpRequest();
+  request.open('GET', 'http://54.232.147.115/appointment/?user_id=3', true);
+  request.setRequestHeader('Content-Type', 'application/json');
 
-      //offline fallback
-      testAppointment1 = new Appointment("5011", "Amanda Pires", "12:10-12:30");
-      testAppointment2 = new Appointment(
-        "5012",
-        "Carlos Hickmann",
-        "14:30-15:30"
-      );
-      testAppointment3 = new Appointment(
-        "5013",
-        "João Nascimento",
-        "11:30-11:45"
-      );
-      testAppointment4 = new Appointment(
-        "5014",
-        "Beatriz Ribeiro",
-        "18:30-18:50"
-      );
-  
-      testAppointment5 = new Appointment("5015", "Joana Telles", "19:00-19:30");
-      testAppointment6 = new Appointment(
-        "5016",
-        "Marta Nascimenton",
-        "19:30-20:00"
-      );
-  
-      testAppointment7 = new Appointment("5017", "Orlando Wender", "20:30-21:00");
-  
-      return [
-        testAppointment1,
-        testAppointment2,
-        testAppointment3,
-        testAppointment4,
-        testAppointment5,
-        testAppointment6,
-        testAppointment7,
-      ];
-    }
+  request.onload = function() {
+      var response = JSON.parse(this.response);
+
+      response.forEach((appointment) => {
+          if (appointment.status == "ACTIVE") {
+              createAppointmentItem(appointment);
+          }
+      })
+      console.log(response);
+  }
+
+  request.send();
 }
