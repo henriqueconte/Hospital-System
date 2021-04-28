@@ -9,6 +9,10 @@ function init() {
 
         tryLogin(login, password);
     });
+
+    document.getElementById('registerButton').addEventListener('click', function() {
+        goToSignUpScreen();
+    });
 }
 
 function tryLogin(login, password) {
@@ -43,4 +47,8 @@ function tryLogin(login, password) {
     }
 
     request.send();
+}
+
+function goToSignUpScreen() {
+    window.location.href = "../SignUp/SignUp.html";
 }
