@@ -21,6 +21,7 @@ function generateReport() {
         reportURL = "http://54.232.147.115/report/?report_type=3"
     }
     reportType = selectedReport;
+    document.getElementById('textBoxForm').value = "";
 
     console.log(selectedReport);
 
@@ -54,14 +55,32 @@ function parseTotalAppointmentsReport(json) {
     const textBox = document.getElementById('textBoxForm');
 
     textBox.value += "Ano: " + year;
-    textBox.value += "\r\n";
+    textBox.value += "\r\n \r\n";
     textBox.value += "Número de consultas realizadas em " + year + ": "+ yearCount;
-    
-    
 }
 
 function parseMonthlyAppointmentsReport(json) {
+    const months = [
+        "Janeiro",
+        "Fevereiro",
+        "Março",
+        "Abril",
+        "Maio",
+        "Junho",
+        "Julho",
+        "Agosto",
+        "Setembro",
+        "Outubro",
+        "Novembro",
+        "Dezembro"
+    ]
+    const textBox = document.getElementById('textBoxForm');
 
+    textBox.value += "Número de consultas realizadas por mês em 2021 \r\n \r\n";
+
+    for (i in json.report_results) {
+        textBox.value += months[i] + ": " + json.report_results[i] + "\r\n";
+    }
 }
 
 function parseRequestedDoctorsReport(json) {
