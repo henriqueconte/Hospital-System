@@ -57,7 +57,7 @@ class AppointmentView(APIView):
         return Response(appointment_serializer.errors, status=400)
 
     def put(self, request):
-        user_id = self.request.query_params.get('user_id', None)
+        user_id = self.request.query_params.get('appointment_id', None)
         try:
             appointment_object = Appointment.objects.get(id=id)
         except Appointment.DoesNotExist:
