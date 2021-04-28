@@ -1,6 +1,8 @@
 // We need to wait DOM to load before calling other functions
 document.addEventListener('DOMContentLoaded', init, false);
 
+var reportType;
+
 function init() {
     document.getElementById('generateReportButton').addEventListener('click', function() {
         generateReport();
@@ -18,7 +20,8 @@ function generateReport() {
     } else if (selectedReport == "Médicos mais requisitados") {
         reportURL = "http://54.232.147.115/report/?report_type=3"
     }
-    
+    reportType = selectedReport;
+
     console.log(selectedReport);
 
     var request = new XMLHttpRequest();
@@ -28,8 +31,39 @@ function generateReport() {
     request.onload = function() {
         var response = JSON.parse(this.response);
 
+        selectReportResponse(response);
         console.log(response);
     }
 
     request.send();
+}
+
+function selectReportResponse(response) {
+    if (reportType == "Número total de consultas por ano") {
+        parseTotalAppointmentsReport(response);
+    } else if (reportType == "Número de consultas por mês em 2021") {
+        parseMonthlyAppointmentsReport(response);
+    } else if (reportType == "Médicos mais requisitados") {
+        parseRequestedDoctorsReport(response);
+    }
+}
+
+function parseTotalAppointmentsReport(json) {
+    const year = json.report_results[0].year;
+    const yearCount = json.report_results[0].yearly_count;
+    const textBox = document.getElementById('textBoxForm');
+
+    textBox.value += "Ano: " + year;
+    textBox.value += "\r\n";
+    textBox.value += "Número de consultas realizadas em " + year + ": "+ yearCount;
+    
+    
+}
+
+function parseMonthlyAppointmentsReport(json) {
+
+}
+
+function parseRequestedDoctorsReport(json) {
+
 }
