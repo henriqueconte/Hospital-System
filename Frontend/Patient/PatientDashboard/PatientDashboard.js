@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', init, false);
 // Create a request variable and assign a new XMLHttpRequest object to it.
 var request = new XMLHttpRequest();
 var selectedAppointment;
+var appointmentList = [];
 
 function init() {
 
@@ -34,6 +35,17 @@ function init() {
 // MARK: - Layout creation
 //*************************************************
 function createAppointmentItem(appointment) {
+    appointmentList.push(new Appointment(
+        appointment.id, 
+        appointment.startDate, 
+        appointment.endDate, 
+        appointment.address,
+        appointment.status, 
+        appointment.prescription,
+        new User(appointment.doctor.id, appointment.doctor.name, appointment.doctor.login, appointment.doctor.birth_date, appointment.doctor.gender, appointment.doctor.user_type), 
+        new User(appointment.patient.id, appointment.patient.name, appointment.patient.login, appointment.patient.birth_date, appointment.patient.gender, appointment.patient.user_type)
+    ));
+
     const appointmentsTableBody = document.getElementById("appointmentsTableBody");
     const tr = document.createElement("tr");
     const doctorNameTd = document.createElement("td");
@@ -60,7 +72,8 @@ function createAppointmentItem(appointment) {
     // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
     tr.setAttribute("id", appointment.id);
     tr.setAttribute("doctorName", appointment.doctor.name);
-    tr.setAttribute("appointmentHour", appointment.startDate);
+    tr.setAttribute("appointmentHour", hourTd.textContent);
+    tr.setAttribute('address', appointment.address);
 
     appointmentsTableBody.appendChild(tr);
     tr.appendChild(doctorNameTd);
@@ -93,14 +106,20 @@ function setDetailsButtonListener(detailsButton) {
         const editingAppointment = document.getElementById(appointmentId);
         const doctorName = editingAppointment.getAttribute("doctorName");
         const appointmentHour = editingAppointment.getAttribute("appointmentHour");
+        const appointmentAddress = editingAppointment.getAttribute('address');
 
         document.getElementById("doctorNameForm").textContent = doctorName;
         document.getElementById("appointmentHourForm").textContent = appointmentHour;
+        document.getElementById('appointmentLocationForm').textContent = appointmentAddress;
 
         // selectedAppointment = new Appointment(appointmentId, doctorName, appointmentHour)
-        selectedAppointment = new Appointment(appointmentId, "----", "(***)", "Sem endereço", "ACTIVE", "Remédio", 
-                                            User("noID", "Nome do médico", "Login do médico", "20/20/20", "Female", "Médico"), 
-                                            User("noID", "Nome do paciente", "Login do paciente", "10/10/10", "MALE", "Paciente"))
+        
+        for (i in appointmentList) {
+            if (appointmentList[i].id == appointmentId) {
+                selectedAppointment = appointmentList[i];
+                console.log(selectedAppointment);
+            }
+        }
     });
 }
 
@@ -128,7 +147,9 @@ function getAppointmentsRequest() {
         var response = JSON.parse(this.response);
 
         response.forEach((appointment) => {
-            createAppointmentItem(appointment);
+            if (appointment.status == "ACTIVE") {
+                createAppointmentItem(appointment);
+            }
         })
         console.log(response);
     }
