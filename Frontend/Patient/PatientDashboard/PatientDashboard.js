@@ -42,8 +42,20 @@ function createAppointmentItem(appointment) {
 
     const detailsButton = createDetailsButton(appointment.id);
 
-    doctorNameTd.textContent = appointment.doctorName
-    hourTd.textContent = appointment.hour
+    doctorNameTd.textContent = appointment.doctor.name;
+    if (appointment.start == null) {
+        hourTd.textContent = "Horário indefinido";
+    } else {
+        const date = new Date(appointment.start);
+        const day = date.getDay();
+        const month = date.getMonth();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
+        const formattedDay = day < 10 ? "0" + day : day
+        const formattedMinutes = minutes == 0 ? minutes + "0" : minutes
+        hourTd.textContent = formattedDay + "/" + month + ", às " + hour + "h" + formattedMinutes
+    }
+    
 
     // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
     tr.setAttribute("id", appointment.id);
@@ -109,19 +121,16 @@ function cancelAppointmentRequest() {
 function getAppointmentsRequest() {
     // TODO: Implement request to get patient appointments
     var request = new XMLHttpRequest();
-    request.open('GET', 'http://54.232.147.115/user/3/', true);
+    request.open('GET', 'http://54.232.147.115/appointment/?user_id=2', true);
     request.setRequestHeader('Content-Type', 'application/json');
     
     request.onload = function() {
         var response = JSON.parse(this.response);
 
-        if (response.statusCode == 200) {
-            response.body.forEach((appointment) => {
-                createAppointmentItem(appointment);
-            })
-        } else {
-            console.error('Error fetching appointments');
-        }
+        response.forEach((appointment) => {
+            createAppointmentItem(appointment);
+        })
+        console.log(response);
     }
 
     request.send();
