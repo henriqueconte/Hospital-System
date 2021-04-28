@@ -13,21 +13,6 @@ function init() {
         cancelAppointment();
     });
 
-    // Mock for creating itens
-    // testAppointment1 = new Appointment('5011', 'Amanda Pires', '12:10-12:30')
-    // testAppointment2 = new Appointment('5012', 'Carlos Hickmann', '14:30-15:30')
-    // testAppointment3 = new Appointment('5013', 'João Nascimento', '11:30-11:45')
-    // testAppointment4 = new Appointment('5014', 'Beatriz Ribeiro', '18:30-18:50')
-    // testAppointment5 = new Appointment('5015', 'Joana Telles', '19:00-19:30')
-    // testAppointment6 = new Appointment('5016', 'Marta Nascimenton', '19:30-20:00')
-    // testAppointment7 = new Appointment('5017', 'Orlando Wender', '20:30-21:00')
-    // createAppointmentItem(testAppointment1)
-    // createAppointmentItem(testAppointment2)
-    // createAppointmentItem(testAppointment3)
-    // createAppointmentItem(testAppointment4)
-    // createAppointmentItem(testAppointment5)
-    // createAppointmentItem(testAppointment6)
-    // createAppointmentItem(testAppointment7)
     getAppointmentsRequest();
 }
 
@@ -134,15 +119,35 @@ function cancelAppointment() {
 // MARK: - Requests
 //*************************************************
 function cancelAppointmentRequest() {
-    // TODO: Implement request to cancel an appointment
+    var request = new XMLHttpRequest();
+    request.open('PUT', 'http://54.232.147.115/appointment/' + selectedAppointment.id, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    const params = {
+        "doctor" : selectedAppointment.doctor.id,
+        "patience" : selectedAppointment.patient.id,
+        "start" : selectedAppointment.startDate,
+        "end" : selectedAppointment.endDate,
+        "address" : selectedAppointment.address,
+        "extra_data" : "",
+        "status" : "CANCELLED",
+        "prescription" : selectedAppointment.prescription
+    }
+
+    request.onload = function() {
+        var response = JSON.parse(this.response);
+
+        console.log(response);
+    }
+
+    request.send(JSON.stringify(params));
 }
 
 function getAppointmentsRequest() {
-    // TODO: Implement request to get patient appointments
     var request = new XMLHttpRequest();
     request.open('GET', 'http://54.232.147.115/appointment/?user_id=2', true);
     request.setRequestHeader('Content-Type', 'application/json');
-    
+
     request.onload = function() {
         var response = JSON.parse(this.response);
 
