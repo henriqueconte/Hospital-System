@@ -84,5 +84,15 @@ function parseMonthlyAppointmentsReport(json) {
 }
 
 function parseRequestedDoctorsReport(json) {
+    const textBox = document.getElementById('textBoxForm');
 
+    textBox.value += "Médicos mais requisitados \r \n";
+
+    for (i = 0; i < 3 && i < json.report_results.length; i ++) {
+        const doctorName = json.report_results[i].name;
+        const appointmentsCount = json.report_results[i].appointments_count;
+
+        textBox.value += "Nome do médico: " + doctorName + "\r\n";
+        textBox.value += "Número de consultas realizadas: " + appointmentsCount + "\r\n \r\n";
+    }
 }
