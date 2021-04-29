@@ -1,0 +1,253 @@
+[
+  {
+    "model": "core.user",
+    "pk": 1,
+    "fields": {
+      "name": "Andrei Silva",
+      "login": "andrei_silva@gmail.com",
+      "password": "andrei123",
+      "birth_date": "1978-11-02",
+      "gender": "MALE",
+      "user_type": "DOCTOR",
+      "doctor_specialty": "CARDIOLOGIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 1,
+    "fields": {
+      "name": "Andrei Silva",
+      "login": "andrei_silva@gmail.com",
+      "password": "andrei123",
+      "birth_date": "1978-11-02",
+      "gender": "MALE",
+      "user_type": "DOCTOR",
+      "doctor_specialty": "CARDIOLOGIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 2,
+    "fields": {
+      "name": "Carlos Silva",
+      "login": "carlos_silva@gmail.com",
+      "password": "carlos123",
+      "birth_date": "1999-11-02",
+      "gender": "MALE",
+      "user_type": "DOCTOR",
+      "doctor_specialty": "PEDIATRICIAN"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 3,
+    "fields": {
+      "name": "Mariana Torres",
+      "login": "mariana_torres@gmail.com",
+      "password": "mari123",
+      "birth_date": "1966-11-02",
+      "gender": "FEMALE",
+      "user_type": "DOCTOR",
+      "doctor_specialty": "OPHTALMOLOGIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 4,
+    "fields": {
+      "name": "Diana Telles",
+      "login": "diana_telles@gmail.com",
+      "password": "diana123",
+      "birth_date": "1986-11-02",
+      "gender": "FEMALE",
+      "user_type": "DOCTOR",
+      "doctor_specialty": "ONCOLOGIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 5,
+    "fields": {
+      "name": "Lilian Mattos",
+      "login": "lilian_mattos@gmail.com",
+      "password": "lili123",
+      "birth_date": "1978-11-02",
+      "gender": "FEMALE",
+      "user_type": "DOCTOR",
+      "doctor_specialty": "DERMATOLOGIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 6,
+    "fields": {
+      "name": "Cecília Silveira",
+      "login": "cecilia_silveira@gmail.com",
+      "password": "ceci123",
+      "birth_date": "1989-11-02",
+      "gender": "FEMALE",
+      "user_type": "DOCTOR",
+      "doctor_specialty": "CARDIOLOGIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 7,
+    "fields": {
+      "name": "Marcelo Barros",
+      "login": "marcelo_barros@gmail.com",
+      "password": "marc123",
+      "birth_date": "1979-09-02",
+      "gender": "MALE",
+      "user_type": "DOCTOR",
+      "doctor_specialty": "OPHTALMOLOGIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 8,
+    "fields": {
+      "name": "Marcos Santos",
+      "login": "marcos_santos@gmail.com",
+      "password": "marc123",
+      "birth_date": "1977-11-04",
+      "gender": "MALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 9,
+    "fields": {
+      "name": "Susana Ferreira",
+      "login": "susana_ferreira@gmail.com",
+      "password": "sus123",
+      "birth_date": "1976-10-12",
+      "gender": "FEMALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 10,
+    "fields": {
+      "name": "Eduardo Ferreira",
+      "login": "eduardo_ferreira@gmail.com",
+      "password": "edu123",
+      "birth_date": "1966-07-12",
+      "gender": "MALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 11,
+    "fields": {
+      "name": "Cristiane Telles",
+      "login": "cristiane_telles@gmail.com",
+      "password": "cris123",
+      "birth_date": "1979-11-05",
+      "gender": "FEMALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 12,
+    "fields": {
+      "name": "João Marcelo",
+      "login": "joao_marcelo@gmail.com",
+      "password": "joao123",
+      "birth_date": "1977-10-12",
+      "gender": "MALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 13,
+    "fields": {
+      "name": "Carlos Santos",
+      "login": "carlos_santos@gmail.com",
+      "password": "carlos123",
+      "birth_date": "1998-12-12",
+      "gender": "MALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 14,
+    "fields": {
+      "name": "Samanta Ferreira",
+      "login": "samanta_ferreira@gmail.com",
+      "password": "sam123",
+      "birth_date": "1988-10-12",
+      "gender": "FEMALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 15,
+    "fields": {
+      "name": "Laura Santos",
+      "login": "laura_santos@gmail.com",
+      "password": "lau123",
+      "birth_date": "1980-11-06",
+      "gender": "FEMALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 16,
+    "fields": {
+      "name": "Tatiana Freitas",
+      "login": "tatiana_freitas@gmail.com",
+      "password": "tati123",
+      "birth_date": "1988-10-12",
+      "gender": "FEMALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 17,
+    "fields": {
+      "name": "Katiana Freitas",
+      "login": "katiana_freitas@gmail.com",
+      "password": "kati123",
+      "birth_date": "1964-10-12",
+      "gender": "FEMALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 18,
+    "fields": {
+      "name": "Bernardo Ferreira",
+      "login": "bernardo_ferreira@gmail.com",
+      "password": "ber123",
+      "birth_date": "1996-10-12",
+      "gender": "MALE",
+      "user_type": "PATIENT"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 19,
+    "fields": {
+      "name": "Lariana Freitas",
+      "login": "lariana_freitas@gmail.com",
+      "password": "lari123",
+      "birth_date": "1988-10-12",
+      "gender": "FEMALE",
+      "user_type": "RECEPTIONIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 20,
+    "fields": {
+      "name": "Suelen Fagundes",
+      "login": "suelen_fagundes@gmail.com",
+      "password": "sue123",
+      "birth_date": "1988-10-12",
+      "gender": "FEMALE",
+      "user_type": "RECEPTIONIST"
+    }
+  }, {
+    "model": "core.user",
+    "pk": 21,
+    "fields": {
+      "name": "Jaqueline Ferreira",
+      "login": "jaqueline_ferreira@gmail.com",
+      "password": "jaque123",
+      "birth_date": "1988-10-12",
+      "gender": "FEMALE",
+      "user_type": "PATIENT"
+    }
+  }
+]
