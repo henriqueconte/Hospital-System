@@ -4,196 +4,207 @@ document.addEventListener("DOMContentLoaded", init, false);
 // Create a request variable and assign a new XMLHttpRequest object to it.
 var request = new XMLHttpRequest();
 var selectedAppointment;
+var appointmentList = [];
 
 function init() {
-  // Cancel appointment
-  document
-    .getElementById("cancelAppointmentButton")
-    .addEventListener("click", function () {
-      cancelAppointment();
-    });
-
-  getAppointmentsRequest().then((s) => {
-    s.forEach(i => {
-      createAppointmentItem(i);
-    })
-    console.log(s);
-  });
+    // Cancel appointment
+    document
+        .getElementById("cancelAppointmentButton")
+        .addEventListener("click", function () {
+            updateAppointmentRequest('CANCELLED');
+        });
+        
+    getAppointmentsRequest();
 }
 
 //*************************************************
 // MARK: - Layout creation
 //*************************************************
 function createAppointmentItem(appointment) {
-  const appointmentsTableBody = document.getElementById(
-    "appointmentsTableBody"
-  );
-  const tr = document.createElement("tr");
-  const patientNameTd = document.createElement("td");
-  const doctorNameTd = document.createElement("td");
-  const hourTd = document.createElement("td");
-  const confirmTd = document.createElement("td");
-  const cancelTd = document.createElement("td");
+    appointmentList.push(new Appointment(
+        appointment.id, 
+        appointment.startDate, 
+        appointment.endDate, 
+        appointment.address,
+        appointment.status, 
+        appointment.prescription,
+        new User(appointment.doctor.id, appointment.doctor.name, appointment.doctor.login, appointment.doctor.birth_date, appointment.doctor.gender, appointment.doctor.user_type), 
+        new User(appointment.patient.id, appointment.patient.name, appointment.patient.login, appointment.patient.birth_date, appointment.patient.gender, appointment.patient.user_type)
+    ));
 
-  const confirmButton = createConfirmButton(appointment.id);
-  const cancelButton = createcancelButton(appointment.id);
+    const appointmentsTableBody = document.getElementById(
+        "appointmentsTableBody"
+    );
+    const tr = document.createElement("tr");
+    const patientNameTd = document.createElement("td");
+    const doctorNameTd = document.createElement("td");
+    const hourTd = document.createElement("td");
+    const confirmTd = document.createElement("td");
+    const cancelTd = document.createElement("td");
 
-  // TODO: Insert real pacient name
-  patientNameTd.textContent = "Antonio Ferreira";
-  doctorNameTd.textContent = appointment.doctorName;
-  hourTd.textContent = appointment.hour;
+    const confirmButton = createConfirmButton(appointment.id);
+    const cancelButton = createcancelButton(appointment.id);
 
-  // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
-  tr.setAttribute("id", appointment.id);
+    // TODO: Insert real pacient name
+    patientNameTd.textContent = appointment.patient.name;
+    doctorNameTd.textContent = appointment.doctor.name;
+    if (appointment.start == null) {
+        hourTd.textContent = "Horário indefinido";
+    } else {
+        const date = new Date(appointment.start);
+        const day = date.getDay();
+        const month = date.getMonth();
+        const hour = date.getHours();
+        const minutes = date.getMinutes();
+        const formattedDay = day < 10 ? "0" + day : day
+        const formattedMinutes = minutes == 0 ? minutes + "0" : minutes
+        hourTd.textContent = formattedDay + "/" + month + ", às " + hour + "h" + formattedMinutes
+    }
 
-  appointmentsTableBody.appendChild(tr);
-  tr.appendChild(patientNameTd);
-  tr.appendChild(doctorNameTd);
-  tr.appendChild(hourTd);
-  tr.appendChild(confirmTd);
-  tr.appendChild(cancelTd);
-  confirmTd.appendChild(confirmButton);
-  cancelTd.appendChild(cancelButton);
+    // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
+    tr.setAttribute("id", appointment.id);
+
+    appointmentsTableBody.appendChild(tr);
+    tr.appendChild(patientNameTd);
+    tr.appendChild(doctorNameTd);
+    tr.appendChild(hourTd);
+    tr.appendChild(confirmTd);
+    tr.appendChild(cancelTd);
+    confirmTd.appendChild(confirmButton);
+    cancelTd.appendChild(cancelButton);
 }
 
 function createConfirmButton(buttonID) {
-  const confirmButton = document.createElement("button");
+    const confirmButton = document.createElement("button");
 
-  confirmButton.setAttribute("id", "confirmButton" + buttonID);
-  confirmButton.setAttribute("type", "button");
-  confirmButton.setAttribute("class", "btn font-weight-bold text-primary");
-  confirmButton.innerHTML = "<u> Finalizar consulta </u>";
-  setConfirmButtonListener(confirmButton);
+    confirmButton.setAttribute("id", "confirmButton" + buttonID);
+    confirmButton.setAttribute("type", "button");
+    confirmButton.setAttribute("class", "btn font-weight-bold text-primary");
+    confirmButton.innerHTML = "<u> Finalizar consulta </u>";
+    setConfirmButtonListener(confirmButton);
 
-  return confirmButton;
+    return confirmButton;
 }
 
 function createcancelButton(buttonID) {
-  const cancelButton = document.createElement("button");
+    const cancelButton = document.createElement("button");
 
-  cancelButton.setAttribute("id", "cancelButton" + buttonID);
-  cancelButton.setAttribute("type", "button");
-  cancelButton.setAttribute("class", "btn font-weight-bold text-danger");
-  cancelButton.setAttribute("data-toggle", "modal");
-  cancelButton.setAttribute("data-target", "#cancelModal");
-  cancelButton.innerHTML = "<u> Cancelar consulta </u>";
-  setcancelButtonListener(cancelButton);
+    cancelButton.setAttribute("id", "cancelButton" + buttonID);
+    cancelButton.setAttribute("type", "button");
+    cancelButton.setAttribute("class", "btn font-weight-bold text-danger");
+    cancelButton.setAttribute("data-toggle", "modal");
+    cancelButton.setAttribute("data-target", "#cancelModal");
+    cancelButton.innerHTML = "<u> Cancelar consulta </u>";
+    setcancelButtonListener(cancelButton);
 
-  return cancelButton;
+    return cancelButton;
 }
 
 //*************************************************
 // MARK: - Listeners configuration
 //*************************************************
 function setcancelButtonListener(cancelButton) {
-  cancelButton.addEventListener("click", function () {
-    const cancelButtonID = cancelButton.getAttribute("id");
-    const appointmentId = cancelButtonID.replace("cancelButton", "");
+    cancelButton.addEventListener("click", function () {
+        const cancelButtonID = cancelButton.getAttribute("id");
+        const appointmentId = cancelButtonID.replace("cancelButton", "");
 
-    const confirmButton = document.getElementById(
-      "confirmButton" + appointmentId
-    );
-    confirmButton.disabled = true;
-    confirmButton.classList.remove("text-primary");
-    confirmButton.textContent = "Finalizar consulta";
+        const confirmButton = document.getElementById(
+        "confirmButton" + appointmentId
+        );
+        confirmButton.disabled = true;
+        confirmButton.classList.remove("text-primary");
+        confirmButton.textContent = "Finalizar consulta";
 
-    selectedAppointment = new Appointment(appointmentId, "", "");
-  });
+        for (i in appointmentList) {
+            if (appointmentList[i].id == appointmentId) {
+                selectedAppointment = appointmentList[i];
+                console.log(selectedAppointment);
+            }
+        }
+    });
 }
 
 function setConfirmButtonListener(confirmButton) {
-  confirmButton.addEventListener("click", function () {
-    confirmButtonID = confirmButton.getAttribute("id");
-    const appointmentId = confirmButtonID.replace("confirmButton", "");
-    confirmButton.disabled = true;
-    confirmButton.textContent = "Consulta finalizada";
-    confirmButton.classList.remove("text-primary");
+    confirmButton.addEventListener("click", function () {
+        confirmButtonID = confirmButton.getAttribute("id");
+        const appointmentId = confirmButtonID.replace("confirmButton", "");
+        confirmButton.disabled = true;
+        confirmButton.textContent = "Consulta finalizada";
+        confirmButton.classList.remove("text-primary");
 
-    const cancelButton = document.getElementById(
-      "cancelButton" + appointmentId
-    );
-    cancelButton.disabled = true;
-    cancelButton.classList.remove("text-danger");
-    cancelButton.textContent = "Cancelar consulta";
+        const cancelButton = document.getElementById(
+        "cancelButton" + appointmentId
+        );
+        cancelButton.disabled = true;
+        cancelButton.classList.remove("text-danger");
+        cancelButton.textContent = "Cancelar consulta";
 
-    selectedAppointment = new Appointment(appointmentId, "", "");
+        for (i in appointmentList) {
+            if (appointmentList[i].id == appointmentId) {
+                selectedAppointment = appointmentList[i];
+                console.log(selectedAppointment);
+            }
+        }
 
-    finishAppointmentRequest();
-  });
+        updateAppointmentRequest('DONE');
+    });
 }
 
 function cancelAppointment() {
-  cancelAppointmentRequest();
-  cancelButton = document.getElementById(
-    "cancelButton" + selectedAppointment.id
-  );
-  cancelButton.textContent = "Consulta cancelada";
-  cancelButton.classList.remove("text-danger");
-  cancelButton.disabled = true;
+    cancelAppointmentRequest();
+    cancelButton = document.getElementById(
+        "cancelButton" + selectedAppointment.id
+    );
+    cancelButton.textContent = "Consulta cancelada";
+    cancelButton.classList.remove("text-danger");
+    cancelButton.disabled = true;
 }
 
 //*************************************************
 // MARK: - Requests
 //*************************************************
-function cancelAppointmentRequest() {
-  // TODO: Implement request to cancel an appointment
+function getAppointmentsRequest() {
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://54.232.147.115/appointment/', true);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    request.onload = function() {
+        var response = JSON.parse(this.response);
+
+        response.forEach((appointment) => {
+            if (appointment.status == "ACTIVE") {
+                createAppointmentItem(appointment);
+            }
+        })
+        console.log(response);
+    }
+
+    request.send();
 }
 
-async function getAppointmentsRequest() {
-  try {
-    const appointments = (
-      await ApiClient.get(
-        `appointment?user_type=RECEPTIONIST&appointment_status=FINISHED`
-      )
-    ).map(
-      (appointment) =>
-        new Appointment(appointment.id, appointment.doctor.name, appointment.start)
-    );
+function updateAppointmentRequest(newStatus) {
+    var request = new XMLHttpRequest();
+    request.open('PUT', 'http://54.232.147.115/appointment/?appointment_id=' + selectedAppointment.id, true);
+    request.setRequestHeader('Content-Type', 'application/json');
 
-    console.log(appointments);
+    const params = {
+        "doctor" : selectedAppointment.doctor.id,
+        "patient" : selectedAppointment.patient.id,
+        "start" : selectedAppointment.startDate,
+        "end" : selectedAppointment.endDate,
+        "address" : selectedAppointment.address,
+        "extra_data" : "",
+        "status" : newStatus,
+        "prescription" : selectedAppointment.prescription
+    }
 
-    return appointments;
-  } catch(err) {
-    console.error(err);
-    // offline fallback
-    testAppointment1 = new Appointment("5011", "Amanda Pires", "12:10-12:30");
-    testAppointment2 = new Appointment(
-      "5012",
-      "Carlos Hickmann",
-      "14:30-15:30"
-    );
-    testAppointment3 = new Appointment(
-      "5013",
-      "João Nascimento",
-      "11:30-11:45"
-    );
-    testAppointment4 = new Appointment(
-      "5014",
-      "Beatriz Ribeiro",
-      "18:30-18:50"
-    );
+    request.onload = function() {
+        var response = JSON.parse(this.response);
 
-    testAppointment5 = new Appointment("5015", "Joana Telles", "19:00-19:30");
-    testAppointment6 = new Appointment(
-      "5016",
-      "Marta Nascimenton",
-      "19:30-20:00"
-    );
+        console.log(response);
+    }
 
-    testAppointment7 = new Appointment("5017", "Orlando Wender", "20:30-21:00");
+    request.send(JSON.stringify(params));
 
-    return [
-      testAppointment1,
-      testAppointment2,
-      testAppointment3,
-      testAppointment4,
-      testAppointment5,
-      testAppointment6,
-      testAppointment7,
-    ];
-  }
 }
 
-function finishAppointmentRequest() {
-  // TODO: Implement request to update appointment status to "Finished"
-}
