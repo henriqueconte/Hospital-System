@@ -133,7 +133,6 @@ function updateExamRequisition() {
     currentExamRequisitionText = document.getElementById("examRequisitionTextBox").value;
     document.getElementById(selectedAppointment.id).setAttribute("examRequisition", currentExamRequisitionText);
 
-    // TODO: Implement request to update appointment
     var request = new XMLHttpRequest();
     request.open('PUT', 'http://54.232.147.115/appointment/?appointment_id=' + selectedAppointment.id, true);
     request.setRequestHeader('Content-Type', 'application/json');
