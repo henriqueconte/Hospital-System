@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', init, false);
 // Create a request variable and assign a new XMLHttpRequest object to it.
 var selectedAppointment;
 var appointmentList = [];
-const loggedUser = sessionStorage.getItem('loggedUser');
+const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
 
 function init() {
     getAppointmentsRequest();
@@ -109,7 +109,7 @@ function cancelAppointment() {
 //*************************************************
 function getAppointmentsRequest() {
     var request = new XMLHttpRequest();
-    request.open('GET', 'http://54.232.147.115/appointment/?user_id=' + loggedUser.id, true);
+    request.open('GET', 'http://54.232.147.115/appointment/?user_id=' + loggedUser.id + '&user_type=PATIENT', true);
     request.setRequestHeader('Content-Type', 'application/json');
 
     request.onload = function() {
