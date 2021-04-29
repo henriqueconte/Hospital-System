@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', init, false);
 var request = new XMLHttpRequest();
 var selectedAppointment;
 var appointmentList = [];
+const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
 
 function init() {
 
@@ -86,7 +87,12 @@ function setcancelButtonListener(cancelButton) {
         const appointmentId = cancelButtonID.replace("cancelButton", "");
         const editingAppointment = document.getElementById(appointmentId);
 
-        selectedAppointment = new Appointment(appointmentId, "", "")
+        for (i in appointmentList) {
+            if (appointmentList[i].id == appointmentId) {
+                selectedAppointment = appointmentList[i];
+                console.log(selectedAppointment);
+            }
+        }
     });
 }
 
@@ -102,12 +108,33 @@ function cancelAppointment() {
 // MARK: - Requests
 //*************************************************
 function cancelAppointmentRequest() {
-    // TODO: Implement request to cancel an appointment
+    var request = new XMLHttpRequest();
+    request.open('PUT', 'http://54.232.147.115/appointment/?appointment_id=' + selectedAppointment.id, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    const params = {
+        "doctor" : selectedAppointment.doctor.id,
+        "patient" : selectedAppointment.patient.id,
+        "start" : selectedAppointment.startDate,
+        "end" : selectedAppointment.endDate,
+        "address" : selectedAppointment.address,
+        "extra_data" : "",
+        "status" : "CANCELLED",
+        "prescription" : selectedAppointment.prescription
+    }
+
+    request.onload = function() {
+        var response = JSON.parse(this.response);
+
+        console.log(response);
+    }
+
+    request.send(JSON.stringify(params));
 }
 
 function getAppointmentsRequest() {
   var request = new XMLHttpRequest();
-  request.open('GET', 'http://54.232.147.115/appointment/?user_id=3', true);
+  request.open('GET', 'http://54.232.147.115/appointment/?user_id=' + loggedUser.id + '&user_type=DOCTOR', true);
   request.setRequestHeader('Content-Type', 'application/json');
 
   request.onload = function() {

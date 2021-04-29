@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', init, false);
 // Create a request variable and assign a new XMLHttpRequest object to it.
 let selectedAppointment;
 var appointmentList = [];
+const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
 
 function init() {
 
@@ -54,7 +55,7 @@ function createAppointmentItem(appointment) {
 
     // Set all appointments attributes on its row (tr is a row), because it will be easier to get these elements later
     tr.setAttribute("id", appointment.id);
-    tr.setAttribute("examRequisition", "Resfenol duas vezes ao dia.")
+    tr.setAttribute("examRequisition", appointment.prescription == null ? "" : appointment.prescription);
 
     appointmentsTableBody.appendChild(tr);
     tr.appendChild(doctorNameTd);
@@ -89,7 +90,12 @@ function setRequisitionButtonListener(requisitionButton) {
 
         document.getElementById("examRequisitionTextBox").value = examRequsition;
         
-        selectedAppointment = new Appointment(appointmentId, "", "", "")
+        for (i in appointmentList) {
+            if (appointmentList[i].id == appointmentId) {
+                selectedAppointment = appointmentList[i];
+                console.log(selectedAppointment);
+            }
+        }
     });
 }
 
@@ -105,7 +111,7 @@ function cancelAppointment() {
 //*************************************************
 function getAppointmentsRequest() {
     var request = new XMLHttpRequest();
-    request.open('GET', 'http://54.232.147.115/appointment/?user_id=3', true);
+    request.open('GET', 'http://54.232.147.115/appointment/?user_id=' + loggedUser.id, true);
     request.setRequestHeader('Content-Type', 'application/json');
 
     request.onload = function() {
@@ -128,6 +134,28 @@ function updateExamRequisition() {
     document.getElementById(selectedAppointment.id).setAttribute("examRequisition", currentExamRequisitionText);
 
     // TODO: Implement request to update appointment
+    var request = new XMLHttpRequest();
+    request.open('PUT', 'http://54.232.147.115/appointment/?appointment_id=' + selectedAppointment.id, true);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    const params = {
+        "doctor" : selectedAppointment.doctor.id,
+        "patient" : selectedAppointment.patient.id,
+        "start" : selectedAppointment.startDate,
+        "end" : selectedAppointment.endDate,
+        "address" : selectedAppointment.address,
+        "extra_data" : "",
+        "status" : selectedAppointment.status,
+        "prescription" : currentExamRequisitionText
+    }
+
+    request.onload = function() {
+        var response = JSON.parse(this.response);
+
+        console.log(response);
+    }
+
+    request.send(JSON.stringify(params));
 }
 
 function formatDateString(start, end) {

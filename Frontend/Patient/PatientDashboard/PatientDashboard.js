@@ -97,8 +97,6 @@ function setDetailsButtonListener(detailsButton) {
         document.getElementById("doctorNameForm").textContent = doctorName;
         document.getElementById("appointmentHourForm").textContent = appointmentHour;
         document.getElementById('appointmentLocationForm').textContent = appointmentAddress;
-
-        // selectedAppointment = new Appointment(appointmentId, doctorName, appointmentHour)
         
         for (i in appointmentList) {
             if (appointmentList[i].id == appointmentId) {
