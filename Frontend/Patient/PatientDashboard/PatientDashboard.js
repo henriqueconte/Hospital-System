@@ -5,15 +5,15 @@ document.addEventListener('DOMContentLoaded', init, false);
 var request = new XMLHttpRequest();
 var selectedAppointment;
 var appointmentList = [];
-const loggedUser = sessionStorage.getItem('loggedUser');
+var loggedUser;
 
 function init() {
-
+    loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
     // Cancel appointment
     document.getElementById("cancelAppointmentButton").addEventListener("click", function() {
         cancelAppointment();
     });
-
+    
     getAppointmentsRequest();
 }
 
@@ -146,7 +146,7 @@ function cancelAppointmentRequest() {
 
 function getAppointmentsRequest() {
     var request = new XMLHttpRequest();
-    request.open('GET', 'http://54.232.147.115/appointment/?user_id=' + loggedUser.id, true);
+    request.open('GET', 'http://54.232.147.115/appointment/?user_id=' + loggedUser.id + '&user_type=PATIENT', true);
     request.setRequestHeader('Content-Type', 'application/json');
 
     request.onload = function() {

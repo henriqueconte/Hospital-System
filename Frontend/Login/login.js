@@ -33,7 +33,7 @@ function tryLogin(login, password) {
             const response = JSON.parse(this.response);
 
             const loggedUser = new User(response.id, response.name, response.login, response.birth_date, response.gender, response.user_type);
-            sessionStorage.setItem("loggedUser", loggedUser);
+            sessionStorage.setItem("loggedUser", JSON.stringify(loggedUser));
 
             console.log(loggedUser);
             if (loggedUser.userType == "PATIENT") {
