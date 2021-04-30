@@ -18,10 +18,8 @@ docker network create hospitalsystem-net
 docker run -td --rm \
     --name hospitalsystem-db \
     -p 3306:3306 \
-    -v mysqldata:/var/lib/mysql \
     --network hospitalsystem-net \
     hospitalsystem-db mysqld --default-authentication-plugin=mysql_native_password
-
 
 echo "waiting 3m for mysql startup"
 # wait for mysql startup
@@ -36,10 +34,9 @@ docker run -td --rm \
     --network hospitalsystem-net \
     hospitalsystem /bin/bash -c "python /code/manage.py makemigrations && \
     python /code/manage.py migrate && \
+    python /code/manage.py loaddata fake_data.json && \
     python /code/manage.py runserver 0.0.0.0:8000"
 
 docker network connect bridge hospitalsystem
 docker network connect bridge hospitalsystem-db
-docker logs -f hospitalsystem 
-
-
+docker logs -f hospitalsystem
