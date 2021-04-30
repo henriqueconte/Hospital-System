@@ -1,5 +1,10 @@
+import json
 from django.test.client import Client
 from django.test import TestCase
+from .expected import EXPECTED_APPOINTMENTS
+
+from .models import Appointment
+from .serializers import AppointmentSerializer
 
 # Talvez você precise mudar essa variavel para o caminho
 # do arquivo de dado para ../fake_data.json para funcionar
@@ -16,7 +21,7 @@ class IntegrationTestCase(TestCase):
 
     def test_reports_1(self):
         c = Client()
-        response = c.get("/report/?report_type=1")
+        response = c.get("/report/", data={"report_type": 1})
         self.assertEqual(
             response.json(),
             {
@@ -29,14 +34,14 @@ class IntegrationTestCase(TestCase):
 
     def test_reports_2(self):
         c = Client()
-        response = c.get("/report/?report_type=2&year=2021")
+        response = c.get("/report/", data={"report_type": "2", "year": 2021})
         self.assertEqual(
             {"report_results": [1, 0, 2, 0, 3, 1, 2, 2, 2, 0, 1, 0]}, response.json()
         )
 
     def test_reports_3(self):
         c = Client()
-        response = c.get("/report/?report_type=3")
+        response = c.get("/report/", data={"report_type": 3})
         self.assertEqual(
             response.json(),
             {
@@ -51,3 +56,32 @@ class IntegrationTestCase(TestCase):
                 ]
             },
         )
+
+    def test_get_receptionist_appointments(self):
+        c = Client()
+        response = c.get("/appointment/")
+        self.assertEquals(EXPECTED_APPOINTMENTS, response.json())
+
+    def test_put_receptionist_appointments(self):
+        c = Client()
+        selected_appointment = EXPECTED_APPOINTMENTS[0]
+
+        response = c.put(
+            "/appointment/?appointment_id=1",
+            data={
+                "doctor": selected_appointment["doctor"]["id"],
+                "patient": selected_appointment["patient"]["id"],
+                "start": selected_appointment["start"],
+                "end": selected_appointment["end"],
+                "address": selected_appointment["address"],
+                "extra_data": "",
+                "status": "DONE",
+                "prescription": selected_appointment["prescription"],
+            },
+            content_type="application/json",
+        )
+
+        print(response.content)
+
+        expected = Appointment.objects.get(id=1)
+        self.assertEqual(str(expected.status), "DONE")
