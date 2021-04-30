@@ -50,13 +50,13 @@ function selectReportResponse(response) {
 }
 
 function parseTotalAppointmentsReport(json) {
-    const year = json.report_results[0].year;
-    const yearCount = json.report_results[0].yearly_count;
     const textBox = document.getElementById('textBoxForm');
+    for (const report_result of json.report_results){
+        const yearCount = report_result.yearly_count;
+        const year = report_result.year;
 
-    textBox.value += "Ano: " + year;
-    textBox.value += "\r\n \r\n";
-    textBox.value += "Número de consultas realizadas em " + year + ": "+ yearCount;
+        textBox.value += `Ano: ${year}\n Número de consultas realizadas em ${year} : ${yearCount}\n`
+    }
 }
 
 function parseMonthlyAppointmentsReport(json) {
