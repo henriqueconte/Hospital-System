@@ -15,23 +15,19 @@ http://54.232.147.115
 - Senha (temporaria): segredo
 - User: root
 
-## Rodando em desenvolvimento:
+## Opção 1:
 
-### Opção 1:
+Importante: Todos esses comandos devem ser executados com python3, se o seu sistema estiver com o python2 como default, faça um alias para o python3, para facilitar o uso.
 
-1 - Instalar os requirements:
+*alias python=python3*
 
-python3 -m pip install -r requirements.txt
+**1 - Instalar os requirements:**
 
-2 - Configurar o banco
+*python -m pip install -r requirements.txt*
 
-3 - Comandos:
+**2 - Configurar o banco local nesta parte no arquivo "Hospital-System/Backend/HospitalSystem/HospitalSystem/settings.py", colocando sua senha e usuário:**
 
-- Executar -> python manage.py runserver
-- Criar migrações quando feitas alterações nos models -> python manage.py makemigrations
-- Migrar as migrações existentes para o banco -> python manage.py migrate
-
-```python
+```
 DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.mysql',
@@ -44,14 +40,34 @@ DATABASES = {
 }
 ```
 
-### Opção 2:
+**3 - Execute o comando abaixo, ele vai subir o serviço e servirá somente para testar se a conexão configurada no passo anterior funcionou.**
 
-Caso você queira rodar em docker:
+*python manage.py runserver*
 
-1 - Instalar docker
+**4 - Se não ocorreu nenhum erro, pare o serviço e execute o comando que fará a criação das tabelas no banco de dados:**
 
-2 - Rodar start_docker_all.bat ou start_docker_all.sh. A api e o banco vão subir em containers separados, e as migrações vão ser aplicadas. O setup inicial do banco demora um pouco, principalmente no windows.
+*python manage.py migrate*
 
-3 - Conectar em localhost:8000
+**5 - [Opcional] Se quiser popular sua tabela com dados falsos, use o comando:**
 
-Opcionalmente, voce pode conectar no banco de dados rodando no container em localhost:3306. USER: root, PASS: root
+*python setup/dbsetup.py *
+
+**6 - Suba o serviço novamente com o comando:**
+
+*python manage.py runserver*
+
+**Testes:**
+
+*python manage.py test*
+
+Se der erro ao carregar as fixtures, ver comentário em
+Backend/HospitalSystem/core/tests.py
+## Opção 2:
+
+**Caso você queira rodar em docker:**
+
+**1 - Instalar docker**
+
+**2 - Rodar start_docker.bat ou start_docker.sh. A api e o banco vão subir em containers separados**
+
+**3 - Conectar em localhost:8000**
