@@ -66,7 +66,7 @@ class IntegrationTestCase(TestCase):
         c = Client()
         selected_appointment = EXPECTED_APPOINTMENTS[0]
 
-        response = c.put(
+        c.put(
             "/appointment/?appointment_id=1",
             data={
                 "doctor": selected_appointment["doctor"]["id"],
@@ -81,7 +81,40 @@ class IntegrationTestCase(TestCase):
             content_type="application/json",
         )
 
-        print(response.content)
-
         expected = Appointment.objects.get(id=1)
         self.assertEqual(str(expected.status), "DONE")
+
+    def test_get_doctor_appointments(self):
+        c = Client()
+        for i in range(0, 6):
+            response = c.get(
+                "/appointment/", data={"user_id": i, "user_type": "DOCTOR"}
+            )
+            doctor_appointments = [
+                x for x in EXPECTED_APPOINTMENTS if x["doctor"]["id"] == i
+            ]
+            self.assertEquals(doctor_appointments, response.json())
+
+    def test_cancel_doctor_appointments(self):
+        c = Client()
+        for i in range(0, 6):
+            doctor_appointments = [
+                x for x in EXPECTED_APPOINTMENTS if x["doctor"]["id"] == i
+            ]
+            for appointment in doctor_appointments:
+                response = c.put(
+                    f"/appointment/?appointment_id={appointment['id']}",
+                    data={
+                        "doctor": appointment["doctor"]["id"],
+                        "patient": appointment["patient"]["id"],
+                        "start": appointment["start"],
+                        "end": appointment["end"],
+                        "address": appointment["address"],
+                        "extra_data": "",
+                        "status": "CANCELLED",
+                        "prescription": appointment["prescription"],
+                    },
+                    content_type="application/json",
+                )
+                expected = Appointment.objects.get(id=i)
+                self.assertEqual(str(expected.status), "CANCELLED")
