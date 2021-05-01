@@ -52,7 +52,7 @@ function createAppointmentItem(appointment) {
         hourTd.textContent = "Horário indefinido";
     } else {
         const date = new Date(appointment.start);
-        const day = date.getDay();
+        const day = date.getDate();
         const month = zeroPad(date.getMonth() + 1);
         const hour = date.getHours();
         const minutes = date.getMinutes();
