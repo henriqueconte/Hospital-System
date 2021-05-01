@@ -50,7 +50,7 @@ class ReportView(APIView):
         elif report_type == self.ReportType.MOST_REQUESTED_DOCTORS:
             return self.get_most_requested_doctors()
         else:
-            print("Request errado, sua BESTA", report_type)
+            print("Request errado", report_type)
 
     def get(self, request):
         """
