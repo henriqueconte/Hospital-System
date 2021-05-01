@@ -95,7 +95,7 @@ class IntegrationTestCase(TestCase):
             ]
             self.assertEquals(doctor_appointments, response.json())
 
-    def test_cancel_doctor_appointments(self):
+    def test_cancel_appointments(self):
         c = Client()
         for i in range(0, 6):
             doctor_appointments = [
@@ -158,3 +158,100 @@ class IntegrationTestCase(TestCase):
             "/login/?user_login=suelen_fagundes@gmail.com&user_password=adasdsad"
         )
         self.assertEqual(400, response.status_code)
+
+    def test_get_user_appointments(self):
+        c = Client()
+        for i in range(8, 18):
+            response = c.get(
+                "/appointment/", data={"user_id": i, "user_type": "PATIENT"}
+            )
+            appointments = [x for x in EXPECTED_APPOINTMENTS if x["patient"]["id"] == i]
+            self.assertEquals(appointments, response.json())
+
+    def test_get_doctor_requests(self):
+        c = Client()
+        specialties = [
+            "CARDIOLOGIST",
+            "OPHTHALMOLOGIST",
+            "DERMATOLOGIST",
+            "ONCOLOGIST",
+            "PEDITRICIAN",
+        ]
+        expected = []
+        for specialty in specialties:
+            response = c.get("/doctors/", data={"specialty": specialty})
+            expected.append(response.json())
+
+        self.assertEqual(
+            expected,
+            [
+                [
+                    {
+                        "id": 1,
+                        "name": "Andrei Silva",
+                        "login": "andrei_silva@gmail.com",
+                        "password": "andrei123",
+                        "birth_date": "1978-11-02",
+                        "gender": "MALE",
+                        "user_type": "DOCTOR",
+                        "doctor_specialty": "CARDIOLOGIST",
+                    },
+                    {
+                        "id": 6,
+                        "name": "Cecília Silveira",
+                        "login": "cecilia_silveira@gmail.com",
+                        "password": "ceci123",
+                        "birth_date": "1989-11-02",
+                        "gender": "FEMALE",
+                        "user_type": "DOCTOR",
+                        "doctor_specialty": "CARDIOLOGIST",
+                    },
+                ],
+                [],
+                [
+                    {
+                        "id": 5,
+                        "name": "Lilian Mattos",
+                        "login": "lilian_mattos@gmail.com",
+                        "password": "lili123",
+                        "birth_date": "1978-11-02",
+                        "gender": "FEMALE",
+                        "user_type": "DOCTOR",
+                        "doctor_specialty": "DERMATOLOGIST",
+                    }
+                ],
+                [
+                    {
+                        "id": 4,
+                        "name": "Diana Telles",
+                        "login": "diana_telles@gmail.com",
+                        "password": "diana123",
+                        "birth_date": "1986-11-02",
+                        "gender": "FEMALE",
+                        "user_type": "DOCTOR",
+                        "doctor_specialty": "ONCOLOGIST",
+                    }
+                ],
+                [],
+            ],
+        )
+
+    def test_schedule_appointment(self):
+        c = Client()
+        c.post(
+            "/appointment/",
+            data={
+                "doctor": 1,
+                "patient": 10,
+                "start": "2018-11-20T15:58:44.767594-06:00",
+                "end": "2018-11-20T15:58:44.767594-06:00",
+                "address": "Av. Soledade, 619",
+                "extra_data": "",
+                "status": "ACTIVE",
+                "prescription": "",
+            },
+            content_type="application/json",
+        )
+        new = Appointment.objects.filter(id=17).get()
+        self.assertEqual(1, new.doctor.id)
+        self.assertEqual(1, new.patient.id)
