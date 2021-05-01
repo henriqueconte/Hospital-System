@@ -3,7 +3,6 @@
 docker rm hospitalsystem-db 2>/dev/null
 docker stop hospitalsystem 2>/dev/null
 
-
 docker run -td --rm \
     -v "$(pwd)"/Backend/HospitalSystem:/code \
     --name hospitalsystem \
@@ -12,7 +11,8 @@ docker run -td --rm \
     --network hospitalsystem-net \
     hospitalsystem /bin/bash -c "python /code/manage.py makemigrations && \
     python /code/manage.py migrate && \
+    python /code/manage.py loaddata fake_data.json && \
     python /code/manage.py runserver 0.0.0.0:8000"
 
 docker network connect bridge hospitalsystem
-docker logs -f hospitalsystem 
+docker logs -f hospitalsystem

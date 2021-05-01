@@ -1,14 +1,14 @@
 // We need to wait DOM to load before calling other functions
 document.addEventListener('DOMContentLoaded', init, false);
-const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser')); 
+const loggedUser = JSON.parse(sessionStorage.getItem('loggedUser'));
 var doctorsList = [];
 
 function init() {
-    document.getElementById('specialityList').addEventListener('change', function() {
+    document.getElementById('specialityList').addEventListener('change', function () {
         getDoctorsRequest();
     });
 
-    document.getElementById('doctorsNameList').addEventListener('change', function() {
+    document.getElementById('doctorsNameList').addEventListener('change', function () {
         getDoctorAvailableDates();
     });
 
@@ -17,7 +17,7 @@ function init() {
     });
 
     // Schedules an appointment
-    document.getElementById("scheduleAppointmentButton").addEventListener("click", function() {
+    document.getElementById("scheduleAppointmentButton").addEventListener("click", function () {
         scheduleAppointmentRequest()
     });
 }
@@ -50,7 +50,6 @@ function setAvailableDates(availableDates) {
         option.setAttribute('value', date);
         let optionName = document.createTextNode(date);
         option.appendChild(optionName);
-
         dateList.appendChild(option);
     })
 }
@@ -65,7 +64,7 @@ function getDoctorsRequest() {
     request.open('GET', 'http://54.232.147.115/doctors/?specialty=' + selectedSpeciality, true);
     request.setRequestHeader('Content-Type', 'application/json');
 
-    request.onload = function() {
+    request.onload = function () {
         var response = JSON.parse(this.response);
         document.getElementById('doctorNameDropdown').removeAttribute('hidden');
 
@@ -77,16 +76,28 @@ function getDoctorsRequest() {
     request.send();
 }
 
+
 function getDoctorAvailableDates() {
     // TODO: Implement request to get doctor available dates
     document.getElementById('dateDropdown').removeAttribute('hidden');
 
-    var dates = [
+    const oneWeekFromNow = addDays(new Date(), 7);
+
+
+
+    const formatDay = (date) => {
+        return `${zeroPad(date.getDate())}/${zeroPad(date.getMonth() + 1)}/${date.getFullYear() - 2000}`
+    }
+
+
+    let dates = [
         "-",
-        "15/07/21 - 12:30",
-        "15/07/21 - 14:30",
-        "16/07/21 - 12:30",
-        "16/07/21 - 15:30"
+        `${formatDay(oneWeekFromNow)} - 12:30`,
+        `${formatDay(oneWeekFromNow)} - 14:30`,
+        `${formatDay(addDays(oneWeekFromNow, 1))} - 15:30`,
+        `${formatDay(addDays(oneWeekFromNow, 2))} - 14:30`,
+        `${formatDay(addDays(oneWeekFromNow, 2))} - 11:00`,
+        `${formatDay(addDays(oneWeekFromNow, 2))} - 16:00`
     ]
 
     setAvailableDates(dates)
@@ -98,7 +109,7 @@ function scheduleAppointmentRequest() {
     request.setRequestHeader('Content-Type', 'application/json');
     const params = parseNewAppointment();
 
-    request.onload = function() {
+    request.onload = function () {
         var response = JSON.parse(this.response);
 
         document.getElementById('modalTitle').textContent = "Consulta agendada com sucesso!"
@@ -134,6 +145,32 @@ function parseDoctorSpeciality() {
 function parseNewAppointment() {
     var selectedDoctorId;
     var dropDownDoctor = document.getElementById("doctorsNameList").value;
+    const select = document.getElementById('appointmentDateForm');
+
+    // format: 08/05/21 - 12:30
+    const parseDatetime = (dateStr) => {
+        const [day, month, year] = `${dateStr}`.split("-")[0].trim().split("/");
+        const [hour, minute] = `${dateStr}`.split("-")[1].trim().split(":");
+
+        let start = new Date();
+        start.setFullYear((+year) + 2000)
+        start.setDate(+day);
+        start.setHours(+hour);
+        start.setMonth(+month + 1)
+        start.setMinutes(+minute)
+
+        const end = addMinutes(start, 45);
+        // 2018-11-20T15:58:44.767594-06:00
+        const startDatestr = `${start.getFullYear()}-${month}-${day}T${hour}:${minute}:00.000000-03:00`
+        const endDateStr = `${start.getFullYear()}-${month}-${day}T${zeroPad(end.getHours())}:${zeroPad(end.getMinutes())}:00.000000-03:00`
+
+        return [startDatestr, endDateStr]
+
+    }
+
+    const [start, end] = parseDatetime(select.value);
+    console.log(start, end)
+
     for (i in doctorsList) {
         if (doctorsList[i].name == dropDownDoctor) {
             selectedDoctorId = doctorsList[i].id;
@@ -141,15 +178,32 @@ function parseNewAppointment() {
     }
 
     const params = {
-        'doctor' : selectedDoctorId,
-        'patient' : loggedUser.id,
-        'start' : "2018-11-20T15:58:44.767594-06:00",
-        'end' : '2018-11-20T15:58:44.767594-06:00',
-        'address' : 'Av. Soledade, 619',
-        'extra_data' : '',
-        'status' : 'ACTIVE',
-        'prescription' : ''
+        'doctor': selectedDoctorId,
+        'patient': loggedUser.id,
+        'start': start,
+        'end': end,
+        'address': 'Av. Soledade, 619',
+        'extra_data': '',
+        'status': 'ACTIVE',
+        'prescription': ''
     }
 
     return params;
+}
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
+function addMinutes(date, minutes) {
+    return new Date(date.getTime() + minutes * 60000);
+}
+
+function zeroPad(n) {
+    if (n < 10) {
+        return `0${n}`
+    }
+    return `${n}`
 }

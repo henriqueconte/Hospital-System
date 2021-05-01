@@ -254,4 +254,5 @@ class IntegrationTestCase(TestCase):
         )
         new = Appointment.objects.filter(id=17).get()
         self.assertEqual(1, new.doctor.id)
-        self.assertEqual(1, new.patient.id)
+        self.assertEqual(10, new.patient.id)
+        self.assertEqual("ACTIVE", new.status)

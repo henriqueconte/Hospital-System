@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', init, false);
 var reportType;
 
 function init() {
-    document.getElementById('generateReportButton').addEventListener('click', function() {
+    document.getElementById('generateReportButton').addEventListener('click', function () {
         generateReport();
     });
 }
@@ -29,7 +29,7 @@ function generateReport() {
     request.open('GET', reportURL, true);
     request.setRequestHeader('Content-Type', 'application/json');
 
-    request.onload = function() {
+    request.onload = function () {
         var response = JSON.parse(this.response);
 
         selectReportResponse(response);
@@ -51,7 +51,7 @@ function selectReportResponse(response) {
 
 function parseTotalAppointmentsReport(json) {
     const textBox = document.getElementById('textBoxForm');
-    for (const report_result of json.report_results){
+    for (const report_result of json.report_results) {
         const yearCount = report_result.yearly_count;
         const year = report_result.year;
 
@@ -88,7 +88,7 @@ function parseRequestedDoctorsReport(json) {
 
     textBox.value += "Médicos mais requisitados \r \n";
 
-    for (i = 0; i < 3 && i < json.report_results.length; i ++) {
+    for (i = 0; i < 3 && i < json.report_results.length; i++) {
         const doctorName = json.report_results[i].name;
         const appointmentsCount = json.report_results[i].appointments_count;
 

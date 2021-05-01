@@ -13,7 +13,7 @@ function init() {
         .addEventListener("click", function () {
             updateAppointmentRequest('CANCELLED');
         });
-        
+
     getAppointmentsRequest();
 }
 
@@ -22,13 +22,13 @@ function init() {
 //*************************************************
 function createAppointmentItem(appointment) {
     appointmentList.push(new Appointment(
-        appointment.id, 
-        appointment.startDate, 
-        appointment.endDate, 
+        appointment.id,
+        appointment.startDate,
+        appointment.endDate,
         appointment.address,
-        appointment.status, 
+        appointment.status,
         appointment.prescription,
-        new User(appointment.doctor.id, appointment.doctor.name, appointment.doctor.login, appointment.doctor.birth_date, appointment.doctor.gender, appointment.doctor.user_type), 
+        new User(appointment.doctor.id, appointment.doctor.name, appointment.doctor.login, appointment.doctor.birth_date, appointment.doctor.gender, appointment.doctor.user_type),
         new User(appointment.patient.id, appointment.patient.name, appointment.patient.login, appointment.patient.birth_date, appointment.patient.gender, appointment.patient.user_type)
     ));
 
@@ -53,7 +53,7 @@ function createAppointmentItem(appointment) {
     } else {
         const date = new Date(appointment.start);
         const day = date.getDay();
-        const month = date.getMonth();
+        const month = zeroPad(date.getMonth() + 1);
         const hour = date.getHours();
         const minutes = date.getMinutes();
         const formattedDay = day < 10 ? "0" + day : day
@@ -109,7 +109,7 @@ function setcancelButtonListener(cancelButton) {
         const appointmentId = cancelButtonID.replace("cancelButton", "");
 
         const confirmButton = document.getElementById(
-        "confirmButton" + appointmentId
+            "confirmButton" + appointmentId
         );
         confirmButton.disabled = true;
         confirmButton.classList.remove("text-primary");
@@ -133,7 +133,7 @@ function setConfirmButtonListener(confirmButton) {
         confirmButton.classList.remove("text-primary");
 
         const cancelButton = document.getElementById(
-        "cancelButton" + appointmentId
+            "cancelButton" + appointmentId
         );
         cancelButton.disabled = true;
         cancelButton.classList.remove("text-danger");
@@ -168,7 +168,7 @@ function getAppointmentsRequest() {
     request.open('GET', 'http://54.232.147.115/appointment/', true);
     request.setRequestHeader('Content-Type', 'application/json');
 
-    request.onload = function() {
+    request.onload = function () {
         var response = JSON.parse(this.response);
 
         response.forEach((appointment) => {
@@ -188,17 +188,17 @@ function updateAppointmentRequest(newStatus) {
     request.setRequestHeader('Content-Type', 'application/json');
 
     const params = {
-        "doctor" : selectedAppointment.doctor.id,
-        "patient" : selectedAppointment.patient.id,
-        "start" : selectedAppointment.startDate,
-        "end" : selectedAppointment.endDate,
-        "address" : selectedAppointment.address,
-        "extra_data" : "",
-        "status" : newStatus,
-        "prescription" : selectedAppointment.prescription
+        "doctor": selectedAppointment.doctor.id,
+        "patient": selectedAppointment.patient.id,
+        "start": selectedAppointment.startDate,
+        "end": selectedAppointment.endDate,
+        "address": selectedAppointment.address,
+        "extra_data": "",
+        "status": newStatus,
+        "prescription": selectedAppointment.prescription
     }
 
-    request.onload = function() {
+    request.onload = function () {
         var response = JSON.parse(this.response);
 
         console.log(response);
@@ -208,3 +208,9 @@ function updateAppointmentRequest(newStatus) {
 
 }
 
+function zeroPad(n) {
+    if (n < 10) {
+        return `0${n}`
+    }
+    return `${n}`
+}
