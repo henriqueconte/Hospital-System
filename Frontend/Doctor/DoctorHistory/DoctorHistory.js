@@ -161,13 +161,6 @@ function formatDateString(start, end) {
     const dateStart = new Date(start);
     const dateEnd = new Date(end);
 
-    const zeroPad = (n) => {
-        if (n < 10) {
-            return `0${n}`
-        }
-        return `${n}`
-    }
-
     const formatDay = (date) => {
         return `${date.getDate()}/${zeroPad(date.getMonth() + 1)}/${date.getFullYear() - 2000}`
     }
@@ -179,4 +172,11 @@ function formatDateString(start, end) {
     }
 
     return `${formatDay(dateStart)} - ${formatHour(dateStart)} às ${formatHour(dateEnd)}`
+}
+
+function zeroPad(n) {
+    if (n < 10) {
+        return `0${n}`
+    }
+    return `${n}`
 }
