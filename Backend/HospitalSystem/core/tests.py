@@ -118,3 +118,43 @@ class IntegrationTestCase(TestCase):
                 )
                 expected = Appointment.objects.get(id=i)
                 self.assertEqual(str(expected.status), "CANCELLED")
+
+    def test_add_doctor_prescription(self):
+        c = Client()
+        for i in range(0, 6):
+            doctor_appointments = [
+                x for x in EXPECTED_APPOINTMENTS if x["doctor"]["id"] == i
+            ]
+            for appointment in doctor_appointments:
+                response = c.put(
+                    f"/appointment/?appointment_id={appointment['id']}",
+                    data={
+                        "doctor": appointment["doctor"]["id"],
+                        "patient": appointment["patient"]["id"],
+                        "start": appointment["start"],
+                        "end": appointment["end"],
+                        "address": appointment["address"],
+                        "extra_data": "",
+                        "status": appointment["status"],
+                        "prescription": f"Teste doctor",
+                    },
+                    content_type="application/json",
+                )
+                expected = Appointment.objects.get(id=i)
+                self.assertEqual(str(expected.prescription), f"Teste doctor")
+
+    def test_login_ok(self):
+        c = Client()
+        response = c.get(
+            "/login/?user_login=suelen_fagundes@gmail.com&user_password=sue123",
+        ).json()
+
+        self.assertEqual(response["login"], "suelen_fagundes@gmail.com")
+        self.assertEqual(response["user_type"], "RECEPTIONIST")
+
+    def test_login_failure(self):
+        c = Client()
+        response = c.get(
+            "/login/?user_login=suelen_fagundes@gmail.com&user_password=adasdsad"
+        )
+        self.assertEqual(400, response.status_code)
