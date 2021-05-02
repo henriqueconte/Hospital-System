@@ -1,9 +1,9 @@
 resource "aws_spot_instance_request" "hospital-system-cluster-instance" {
   ami                         = "ami-038707d64e5b8e7ba"
-  spot_price                  = "0.02"
-  instance_type               = "m3.medium"
+  spot_price                  = "0.10"
+  instance_type               = "t3a.small"
   availability_zone           = "sa-east-1a"
-  instance_interruption_behaviour = "terminate"
+  instance_interruption_behaviour = "stop"
   associate_public_ip_address = true
   private_ip                  = "10.0.1.55"
   spot_type                   = "persistent"
