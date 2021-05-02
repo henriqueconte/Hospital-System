@@ -12,7 +12,7 @@
               "containerPort": 8000
             }
           ],
-          "command": ["/bin/bash" ,"-c", "python /code/manage.py makemigrations && python /code/manage.py migrate && python /code/manage.py loaddata fake_data.json && python /code/manage.py runserver 0.0.0.0:8000"],
+          "command": ["/bin/bash" ,"-c", "python /code/manage.py makemigrations && python /code/manage.py migrate && python /code/manage.py runserver 0.0.0.0:8000"],
           "linuxParameters": {
             "capabilities": {
               "add": null,
